@@ -31,9 +31,9 @@
 
 ---
 
-## Current State: Phase 0 nearly complete, Phase 1 queued
+## Current State: Phase 0 COMPLETE, Phase 1 queued
 
-## Next Block: 0.3 -- Dynamic [slug] Route + Template Renderer
+## Next Block: 1.1 -- Homepage -- Conversion Landing Page
 
 ---
 
@@ -105,7 +105,7 @@ Basic layout + pages. No auth yet (Block 1.7). No page editor yet (Block 1.9).
 |-------|------|--------|------------|
 | **0.1** | SEO Architecture & Keyword Map | DONE | -- |
 | **0.2** | Supabase Content Layer | DONE | 0.1 |
-| **0.3** | Dynamic [slug] Route + Template Renderer | **NEXT** | 0.2 |
+| **0.3** | Dynamic [slug] Route + Template Renderer | **DONE** | 0.2 |
 | **0.4** | Audit Fix: RLS + Validation + i18n | DONE | 0.2 |
 | **0.5** | Audit Fix: Webhook + Sitemap + Errors | DONE | 0.4 |
 | **1.0** | Foundation: DB + Stripe + Types | DONE | -- |
