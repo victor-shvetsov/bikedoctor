@@ -12,6 +12,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { createClient } from "@/lib/supabase/server"
+import { createStaticClient } from "@/lib/supabase/static"
 import { resolveTemplate } from "@/lib/templates/template-registry"
 import { generateJsonLd } from "@/lib/schemas/json-ld"
 import type { PageContent } from "@/lib/types"
@@ -91,7 +92,7 @@ export async function generateMetadata({
 // ---------------------------------------------------------------------------
 
 export async function generateStaticParams() {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
   const { data } = await supabase
     .from("page_content")
     .select("slug")
