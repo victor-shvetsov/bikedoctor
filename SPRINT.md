@@ -31,9 +31,9 @@
 
 ---
 
-## Current State: Phase 0 COMPLETE, Phase 1 queued
+## Current State: Phase 0 COMPLETE, Phase 1 in progress (1.1 done)
 
-## Next Block: 1.1 -- Homepage -- Conversion Landing Page
+## Next Block: 1.2 -- Location + Bike Type + Brand Templates
 
 ---
 
@@ -109,7 +109,7 @@ Basic layout + pages. No auth yet (Block 1.7). No page editor yet (Block 1.9).
 | **0.4** | Audit Fix: RLS + Validation + i18n | DONE | 0.2 |
 | **0.5** | Audit Fix: Webhook + Sitemap + Errors | DONE | 0.4 |
 | **1.0** | Foundation: DB + Stripe + Types | DONE | -- |
-| **1.1** | Homepage -- Conversion Landing Page | QUEUED | 0.3 |
+| **1.1** | Homepage -- Conversion Landing Page | **DONE** | 0.3 |
 | **1.2** | Location + Bike Type + Brand Templates | QUEUED | 1.1 |
 | **1.3** | Pricing + Info Pages | QUEUED | 1.1 |
 | **1.4** | Navbar + Footer + Public Layout | QUEUED | 0.3 |
