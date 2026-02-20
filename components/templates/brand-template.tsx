@@ -7,9 +7,9 @@
 
 import Link from "next/link"
 import type { TemplateProps } from "@/lib/templates/template-registry"
-import { FaqSection } from "@/components/templates/faq-section"
+import { FaqSection } from "@/components/sections/faq-section"
 import { CrossLinks } from "@/components/templates/cross-links"
-import { CtaBanner } from "@/components/templates/cta-banner"
+import { CtaBanner } from "@/components/sections/cta-banner"
 
 export function BrandTemplate({ page, crossLinks }: TemplateProps) {
   // Extract brand name from h1 (e.g. "Babboe Service & Reparation" -> "Babboe")
