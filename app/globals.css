@@ -1,0 +1,91 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* BikeDoctor brand -- exact from logo SVG: Navy #082852 + Coral #F15C45 */
+  --background: #f0f4f8;
+  --foreground: #082852;
+  --card: #ffffff;
+  --card-foreground: #082852;
+  --popover: #ffffff;
+  --popover-foreground: #082852;
+  --primary: #082852;
+  --primary-foreground: #ffffff;
+  --secondary: #e8eef5;
+  --secondary-foreground: #082852;
+  --muted: #e8eef5;
+  --muted-foreground: #4a6a8a;
+  --accent: #F15C45;
+  --accent-foreground: #ffffff;
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --border: #c9d6e3;
+  --input: #c9d6e3;
+  --ring: #F15C45;
+  --chart-1: #082852;
+  --chart-2: #F15C45;
+  --chart-3: #2a7d6d;
+  --chart-4: #4a6a8a;
+  --chart-5: #f08a72;
+  --radius: 0.625rem;
+  --sidebar: #082852;
+  --sidebar-foreground: #f0f4f8;
+  --sidebar-primary: #F15C45;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0c3a6e;
+  --sidebar-accent-foreground: #f0f4f8;
+  --sidebar-border: #0c3a6e;
+  --sidebar-ring: #F15C45;
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
