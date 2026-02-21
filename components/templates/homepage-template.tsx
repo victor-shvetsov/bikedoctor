@@ -8,7 +8,6 @@
 
 import type { TemplateProps } from "@/lib/templates/template-registry"
 import { HeroSection } from "@/components/sections/hero-section"
-import { UspCards } from "@/components/sections/usp-cards"
 import { TestimonialsCarousel } from "@/components/sections/testimonials-carousel"
 import { VideoSection } from "@/components/sections/video-section"
 import { HowItWorks } from "@/components/sections/how-it-works"
@@ -30,10 +29,7 @@ export function HomepageTemplate({ page }: TemplateProps) {
         ctaText={page.cta_text}
       />
 
-      {/* USP cards overlapping hero bottom edge */}
-      <UspCards />
-
-      {/* 2. Testimonials */}
+      {/* 2. Testimonials -- floating reviews right after hero */}
       <TestimonialsCarousel />
 
       {/* 3. Bike Types -- two-tone heading, wrench link list, photo */}
