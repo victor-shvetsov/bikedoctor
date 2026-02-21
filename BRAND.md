@@ -64,13 +64,47 @@ Your own dashboard: bikes, repair history, invoices, direct booking, and persona
 
 ## Visual Identity (implemented in globals.css)
 
+### Colors (from Figma)
+
 | Token | Value | Usage |
 |-------|-------|-------|
-| Primary (Navy) | `#082852` | Headers, hero bg, trust elements, navbar |
-| Accent (Coral) | `#F15C45` | CTA buttons, highlights, urgency |
-| Background | `#f0f4f8` | Page background, section alternation |
-| Text | Dark navy variants | Body text, headings |
+| Primary (Navy) | `#082852` | Hero overlay, headings, navbar text, primary text |
+| Accent (Coral) | `#F15C45` | CTA buttons, icon highlights, accent headings (italic), links |
+| Background | `#f9fbff` | Default page bg (very light blue-white) |
+| Secondary bg | `#f0f4f8` | Alternating section backgrounds |
+| Card | `#ffffff` | All card surfaces |
+| Trustpilot Green | `#00b67a` | Trustpilot stars and badge |
+| Border | `#e2e8f0` | Subtle borders (used sparingly) |
+| Muted text | `#4a6a8a` | Body text, descriptions |
 | Font | Geist Sans | All UI text |
+
+### Component Patterns (from Figma -- apply everywhere)
+
+| Pattern | Figma spec | CSS |
+|---------|-----------|-----|
+| **Cards** | White, rounded 16px, soft shadow, NO visible border | `bd-card` utility or `rounded-2xl bg-card shadow-sm` |
+| **CTA button** | Coral pill, white text, icon right, shadow | `bd-cta` utility or `rounded-full bg-accent text-accent-foreground shadow-md` |
+| **Section heading** | Navy bold + coral italic accent words | `bd-heading` + `<span class="bd-heading-accent">` |
+| **Body text** | Muted foreground, relaxed line-height | `bd-body` utility |
+| **Icon containers** | Coral tinted bg, coral icon, rounded-xl | `bd-icon` utility |
+| **Section container** | max-w-6xl, centered, px-5/6/8 responsive | `bd-container` utility |
+| **Section spacing** | py-16 / py-20 / py-24 responsive | `bd-section` utility |
+| **Hero layout** | Full-bleed photo bg, navy gradient overlay (heavier on left), text LEFT-aligned, not centered | See hero-section.tsx |
+| **USP cards** | 3-col grid, overlap hero bottom edge, white cards with line-art coral icons | Negative margin-top to overlap hero |
+| **Section headings** | Two-tone: navy bold for main words, coral italic for accent phrase | `<h2 class="bd-heading">Main <span class="bd-heading-accent">accent</span></h2>` |
+
+### Build Rules for Sections
+
+1. Every section component uses `bd-container` for width + padding.
+2. Every section uses `bd-section` for vertical rhythm.
+3. Cards always use `bd-card` (rounded-2xl, shadow-sm, no border).
+4. CTA buttons always use `bd-cta` (coral pill) or `bd-cta-outline`.
+5. Headings use `bd-heading` + `bd-heading-accent` for the two-tone pattern.
+6. Body text uses `bd-body`.
+7. Icon containers use `bd-icon`.
+8. Sections alternate between `bg-background` and `bg-secondary` for visual rhythm.
+9. No heavy borders on cards -- only shadows.
+10. Hero text is LEFT-aligned, not centered.
 
 ---
 

@@ -14,14 +14,14 @@ export function FaqSection({ faqs }: FaqSectionProps) {
   if (!faqs || faqs.length === 0) return null
 
   return (
-    <section className="bg-card py-20 sm:py-24">
-      <div className="mx-auto max-w-3xl px-6">
+    <section className="bd-section bg-secondary">
+      <div className="bd-container max-w-3xl">
         <div className="text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {"Ofte stillede sp\u00f8rgsm\u00e5l"}
+          <h2 className="bd-heading">
+            Ofte stillede <span className="bd-heading-accent">sporgsmal</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-            {"Find svar p\u00e5 de mest almindelige sp\u00f8rgsm\u00e5l"}
+          <p className="bd-body mx-auto mt-3 max-w-xl">
+            Find svar pa de mest almindelige sporgsmal
           </p>
         </div>
 
@@ -29,28 +29,19 @@ export function FaqSection({ faqs }: FaqSectionProps) {
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index
             return (
-              <div
-                key={index}
-                className={`rounded-2xl border transition-colors ${
-                  isOpen
-                    ? "border-accent/20 bg-background"
-                    : "border-border/60 bg-background"
-                }`}
-              >
+              <div key={index} className="bd-card">
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                  className="flex w-full items-center justify-between gap-4 text-left"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm font-medium text-foreground">
+                  <span className="text-sm font-medium text-foreground sm:text-base">
                     {faq.question}
                   </span>
                   <div
                     className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
-                      isOpen
-                        ? "bg-accent/10"
-                        : "bg-secondary"
+                      isOpen ? "bg-accent/10" : "bg-secondary"
                     }`}
                   >
                     <ChevronDown
@@ -66,7 +57,7 @@ export function FaqSection({ faqs }: FaqSectionProps) {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-6 pb-5 text-sm leading-relaxed text-muted-foreground">
+                    <div className="pt-4 text-sm leading-relaxed text-muted-foreground">
                       {faq.answer}
                     </div>
                   </div>

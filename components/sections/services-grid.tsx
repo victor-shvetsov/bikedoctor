@@ -37,13 +37,13 @@ export async function ServicesGrid() {
   const categoryOrder = ["repair", "service", "safety"]
 
   return (
-    <section className="bg-card py-20 sm:py-24">
-      <div className="mx-auto max-w-6xl px-6">
+    <section className="bd-section bg-card">
+      <div className="bd-container">
         <div className="text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Vores ydelser
+          <h2 className="bd-heading">
+            Vores <span className="bd-heading-accent">ydelser</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
+          <p className="bd-body mx-auto mt-3 max-w-xl">
             Professionel service til alle typer cykler
           </p>
         </div>
@@ -58,19 +58,19 @@ export async function ServicesGrid() {
             return (
               <div key={cat}>
                 <div className="mb-5 flex items-center gap-2.5">
-                  <div className="flex size-8 items-center justify-center rounded-lg bg-accent/10">
-                    <Icon className="size-4 text-accent" />
+                  <div className="bd-icon !size-8">
+                    <Icon className="size-4" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground">
                     {meta.label}
                   </h3>
                 </div>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((service) => (
                     <Link
                       key={service.id}
                       href="/#book"
-                      className="group flex items-center justify-between rounded-2xl border border-border/60 bg-background p-4 transition-all hover:border-accent/30 hover:shadow-sm"
+                      className="group flex items-center justify-between rounded-2xl bg-background p-4 shadow-sm transition-all hover:shadow-md"
                     >
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium text-foreground">
@@ -84,8 +84,7 @@ export async function ServicesGrid() {
                       </div>
                       <div className="ml-4 flex shrink-0 items-center gap-2">
                         <span className="text-sm font-bold text-accent">
-                          {"fra "}
-                          {formatDKK(service.price_dkk)}
+                          fra {formatDKK(service.price_dkk)}
                         </span>
                         <ArrowRight className="size-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
                       </div>
