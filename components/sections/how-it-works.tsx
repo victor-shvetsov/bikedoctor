@@ -27,30 +27,30 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="bg-background py-16 sm:py-20">
-      <div className="mx-auto max-w-5xl px-4">
+    <section className="bg-background py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-6">
         <div className="text-center">
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            S&aring;dan fungerer det
+            {"S\u00e5dan fungerer det"}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-            F&aring; din cykel repareret i 3 enkle trin
+            {"F\u00e5 din cykel repareret i 3 enkle trin"}
           </p>
         </div>
 
-        <div className="mt-12 flex flex-col items-stretch gap-6 sm:flex-row sm:gap-8">
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8">
           {STEPS.map((step) => (
             <div
               key={step.number}
-              className="flex flex-1 flex-col items-center rounded-xl border border-border bg-card p-6 text-center sm:p-8"
+              className="group relative flex flex-col items-center rounded-2xl bg-card p-8 text-center shadow-sm transition-shadow hover:shadow-md"
             >
-              <div className="flex size-14 items-center justify-center rounded-full bg-primary">
-                <step.icon className="size-6 text-primary-foreground" />
+              {/* Step number badge */}
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-accent/10">
+                <span className="text-xl font-bold text-accent">
+                  {step.number}
+                </span>
               </div>
-              <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Trin {step.number}
-              </span>
-              <h3 className="mt-2 text-lg font-bold text-foreground">
+              <h3 className="mt-5 text-lg font-bold text-foreground">
                 {step.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -60,12 +60,12 @@ export function HowItWorks() {
           ))}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-10 text-center">
           <Link
             href="/#book"
-            className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+            className="text-sm font-semibold text-accent underline-offset-4 transition-colors hover:underline"
           >
-            Book nu -- det tager kun 2 minutter
+            {"Book nu \u2014 det tager kun 2 minutter"}
           </Link>
         </div>
       </div>

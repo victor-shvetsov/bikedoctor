@@ -1,15 +1,17 @@
 // =============================================================================
-// Brand Template Shell (Block 0.3)
+// Brand Template (Block 0.3 shell, upgraded Block 1.1 design)
 // =============================================================================
 // Renders brand pages (e.g. /babboe-service).
-// Service-detail, price-table sections built in Block 1.2.
+// Uses HeroSection with "Autoriseret service" badge, TrustBar, HowItWorks.
 // =============================================================================
 
-import Link from "next/link"
 import type { TemplateProps } from "@/lib/templates/template-registry"
+import { HeroSection } from "@/components/sections/hero-section"
+import { TrustBar } from "@/components/sections/trust-bar"
+import { HowItWorks } from "@/components/sections/how-it-works"
 import { FaqSection } from "@/components/sections/faq-section"
-import { CrossLinks } from "@/components/templates/cross-links"
 import { CtaBanner } from "@/components/sections/cta-banner"
+import { CrossLinks } from "@/components/templates/cross-links"
 
 export function BrandTemplate({ page, crossLinks }: TemplateProps) {
   // Extract brand name from h1 (e.g. "Babboe Service & Reparation" -> "Babboe")
@@ -18,42 +20,28 @@ export function BrandTemplate({ page, crossLinks }: TemplateProps) {
 
   return (
     <>
-      {/* Hero section shell */}
-      <section className="flex flex-col items-center px-4 pb-16 pt-24 text-center">
-        <div className="mb-4 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-          Autoriseret service
-        </div>
-        <h1 className="mx-auto max-w-3xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-          {page.h1}
-        </h1>
-        {page.subheadline && (
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
-            {page.subheadline}
-          </p>
-        )}
-        <Link
-          href="/#book"
-          className="mt-8 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90"
-        >
-          {page.cta_text}
-        </Link>
-      </section>
+      <HeroSection
+        h1={page.h1}
+        subheadline={page.subheadline}
+        ctaText={page.cta_text}
+        badge="Autoriseret service"
+      />
 
-      {/* Placeholder sections -- built in Block 1.2 */}
-      {/* trust-bar (brand-specific) */}
+      <TrustBar />
+
+      <HowItWorks />
+
+      {/* Placeholder sections -- detailed in Block 1.2 */}
       {/* service-detail (brand expertise) */}
       {/* price-table */}
 
-      {/* FAQ section */}
       <FaqSection faqs={page.faqs} />
 
-      {/* CTA Banner */}
       <CtaBanner
-        heading={`Expert ${brandName} service -- book nu`}
+        heading={`Expert ${brandName} service \u2014 book nu`}
         ctaText={page.cta_text}
       />
 
-      {/* Cross-links */}
       <CrossLinks links={crossLinks} />
     </>
   )

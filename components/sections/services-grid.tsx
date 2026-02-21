@@ -2,12 +2,9 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { formatDKK } from "@/lib/i18n"
 import type { ServiceCatalogItem } from "@/lib/types"
-import { Wrench, Settings, Shield } from "lucide-react"
+import { Wrench, Settings, Shield, ArrowRight } from "lucide-react"
 
-const CATEGORY_META: Record<
-  string,
-  { label: string; icon: typeof Wrench }
-> = {
+const CATEGORY_META: Record<string, { label: string; icon: typeof Wrench }> = {
   repair: { label: "Reparation", icon: Wrench },
   service: { label: "Service", icon: Settings },
   safety: { label: "Sikkerhed", icon: Shield },
@@ -27,7 +24,6 @@ async function getServices(): Promise<ServiceCatalogItem[]> {
 export async function ServicesGrid() {
   const services = await getServices()
 
-  // Group by category
   const grouped = services.reduce(
     (acc, s) => {
       const cat = s.category || "repair"
@@ -41,8 +37,8 @@ export async function ServicesGrid() {
   const categoryOrder = ["repair", "service", "safety"]
 
   return (
-    <section className="bg-secondary/30 py-16 sm:py-20">
-      <div className="mx-auto max-w-5xl px-4">
+    <section className="bg-card py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-6">
         <div className="text-center">
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Vores ydelser
@@ -52,20 +48,19 @@ export async function ServicesGrid() {
           </p>
         </div>
 
-        <div className="mt-12 flex flex-col gap-10">
+        <div className="mt-14 flex flex-col gap-12">
           {categoryOrder.map((cat) => {
             const items = grouped[cat]
             if (!items || items.length === 0) return null
-            const meta = CATEGORY_META[cat] ?? {
-              label: cat,
-              icon: Wrench,
-            }
+            const meta = CATEGORY_META[cat] ?? { label: cat, icon: Wrench }
             const Icon = meta.icon
 
             return (
               <div key={cat}>
-                <div className="mb-4 flex items-center gap-2">
-                  <Icon className="size-5 text-accent" />
+                <div className="mb-5 flex items-center gap-2.5">
+                  <div className="flex size-8 items-center justify-center rounded-lg bg-accent/10">
+                    <Icon className="size-4 text-accent" />
+                  </div>
                   <h3 className="text-lg font-semibold text-foreground">
                     {meta.label}
                   </h3>
@@ -74,8 +69,8 @@ export async function ServicesGrid() {
                   {items.map((service) => (
                     <Link
                       key={service.id}
-                      href={`/#book`}
-                      className="flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-colors hover:border-accent/40 hover:bg-card"
+                      href="/#book"
+                      className="group flex items-center justify-between rounded-2xl border border-border/60 bg-background p-4 transition-all hover:border-accent/30 hover:shadow-sm"
                     >
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium text-foreground">
@@ -87,9 +82,13 @@ export async function ServicesGrid() {
                           </p>
                         )}
                       </div>
-                      <span className="ml-3 shrink-0 text-sm font-bold text-accent">
-                        {formatDKK(service.price_dkk)}
-                      </span>
+                      <div className="ml-4 flex shrink-0 items-center gap-2">
+                        <span className="text-sm font-bold text-accent">
+                          {"fra "}
+                          {formatDKK(service.price_dkk)}
+                        </span>
+                        <ArrowRight className="size-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                      </div>
                     </Link>
                   ))}
                 </div>
@@ -98,12 +97,13 @@ export async function ServicesGrid() {
           })}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-10 text-center">
           <Link
             href="/cykelsmed-priser"
-            className="text-sm font-semibold text-accent underline-offset-2 hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent underline-offset-4 transition-colors hover:underline"
           >
             Se alle priser
+            <ArrowRight className="size-3.5" />
           </Link>
         </div>
       </div>
