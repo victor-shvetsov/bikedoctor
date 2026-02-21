@@ -43,7 +43,7 @@ Your own dashboard: bikes, repair history, invoices, direct booking, and persona
 ## Tone of Voice
 
 - **Warm and direct.** Like a friend who's also a professional.
-- **Danish-first.** All public copy in Danish (da). English available but not primary.
+- **Danish-first.** All public copy in Danish (da) at root URLs. English at /en/ prefix. No Romanian on public site.
 - **No corporate speak.** "Vi fikser din cykel" not "Vi tilbyder cykelreparationsydelser."
 - **Confident but not arrogant.** We're experts, but we're approachable.
 - **Action-oriented CTAs.** "Book nu", "Fa din cykel fikset", "Vaelg din cykel."

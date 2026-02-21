@@ -138,12 +138,15 @@ export interface BookingFlowState {
   } | null
 }
 
-// i18n locale type -- ALL 3 available everywhere
-// da = Danish  (PRIMARY customer-facing, SEO target market)
-// en = English (PRIMARY admin/mechanic; secondary customer-facing)
-// ro = Romanian (SECONDARY admin/mechanic; team language)
+// i18n locale types
+// Full Locale: all 3 languages for admin/internal
+// CustomerLocale: da + en only for public-facing pages
+// da = Danish  (PRIMARY customer-facing, SEO target market, x-default)
+// en = English (secondary customer-facing, primary admin/mechanic)
+// ro = Romanian (admin/mechanic only -- NOT on public site)
 // Fallback: requested -> en -> da
 export type Locale = "da" | "en" | "ro"
+export type CustomerLocale = "da" | "en"
 
 // ============================================================================
 // Site Config (global content layer)

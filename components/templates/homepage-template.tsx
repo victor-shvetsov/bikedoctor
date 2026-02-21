@@ -20,35 +20,36 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { CoverageMapSection } from "@/components/sections/coverage-map-section"
 import { CtaBanner } from "@/components/sections/cta-banner"
 
-export async function HomepageTemplate({ page }: TemplateProps) {
-  const ctaBanner = await getSiteConfig("cta_banner")
+export async function HomepageTemplate({ page, locale }: TemplateProps) {
+  const ctaBanner = await getSiteConfig("cta_banner", locale)
 
   return (
     <>
-      {/* 1. Hero -- full-bleed photo, left-aligned text, coral CTA, Trustpilot badge */}
+      {/* 1. Hero -- full-bleed photo, centered text, coral CTA, USP labels */}
       <HeroSection
         h1={page.h1}
         subheadline={page.subheadline}
         ctaText={page.cta_text}
+        locale={locale}
       />
 
       {/* 2. Testimonials -- floating reviews right after hero */}
       <TestimonialsCarousel />
 
       {/* 3. Bike Types -- two-tone heading, wrench link list, photo */}
-      <BikeTypesGrid />
+      <BikeTypesGrid locale={locale} />
 
       {/* 4. How It Works (Video) */}
-      <VideoSection />
+      <VideoSection locale={locale} />
 
       {/* 5. How It Works (Steps) -- 4-step grid */}
-      <HowItWorks />
+      <HowItWorks locale={locale} />
 
       {/* 6. Pricing -- subscription card + service grid */}
-      <PricingSection />
+      <PricingSection locale={locale} />
 
       {/* 7. About -- founder story */}
-      <AboutSection />
+      <AboutSection locale={locale} />
 
       {/* 8. App Preview -- dashboard mockup */}
       <AppPreviewSection />

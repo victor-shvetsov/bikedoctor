@@ -1,20 +1,38 @@
 import { createClient } from "@/lib/supabase/server"
-import type { SiteConfig } from "@/lib/types"
+import type { SiteConfig, CustomerLocale } from "@/lib/types"
 import { cache } from "react"
 
 // ---------------------------------------------------------------------------
-// getSiteConfig()
+// getSiteConfig() -- locale-aware
 //
-// Fetches ALL site_config rows in a single query, returns a typed object.
-// Wrapped in React.cache() so multiple components in one render share
-// the same DB call. Next.js Request Memoization ensures no duplicate
-// fetches within a single request.
+// Fetches site_config from Supabase. Supports da + en locales.
+// DB schema:
+//   key = "nav_links"       -> Danish (default)
+//   key = "nav_links_en"    -> English override
 //
-// Resolution order for section components:
-//   page.sections_config[key]  -->  siteConfig[key]  -->  hardcoded default
+// Resolution: getSiteConfig("nav_links", "en")
+//   1. Try "nav_links_en" in DB
+//   2. Fallback to "nav_links" in DB (Danish)
+//   3. Fallback to hardcoded DEFAULTS
+//
+// For "da" or when locale is omitted, we just fetch the base key.
+// Wrapped in React.cache() for request-level dedup.
 // ---------------------------------------------------------------------------
 
-// Hardcoded defaults -- used when DB is empty or during development
+// Keys that have English variants in site_config
+const TRANSLATABLE_KEYS: Set<keyof SiteConfig> = new Set([
+  "nav_links",
+  "hero_usps",
+  "trust_stats",
+  "how_it_works_steps",
+  "how_it_works",
+  "about",
+  "cta_banner",
+  "hero_secondary_cta",
+  "footer",
+])
+
+// Hardcoded defaults -- Danish. Used when DB is empty or during development.
 const DEFAULTS: SiteConfig = {
   phone: { number: "+45 52 52 34 97", href: "tel:+4552523497" },
   nav_links: [
@@ -78,14 +96,32 @@ const DEFAULTS: SiteConfig = {
 }
 
 /**
- * Fetch a single config key with type safety.
- * Falls back to hardcoded default if missing.
+ * Fetch a single config key with optional locale.
+ * For locale="en", tries "key_en" first, then falls back to "key" (Danish).
+ * Falls back to hardcoded DEFAULTS if both are missing.
  */
 export const getSiteConfig = cache(async <K extends keyof SiteConfig>(
-  key: K
+  key: K,
+  locale: CustomerLocale = "da"
 ): Promise<SiteConfig[K]> => {
   try {
     const supabase = await createClient()
+
+    // If English and this key is translatable, try _en variant first
+    if (locale === "en" && TRANSLATABLE_KEYS.has(key)) {
+      const enKey = `${key}_en`
+      const { data: enData } = await supabase
+        .from("site_config")
+        .select("value")
+        .eq("key", enKey)
+        .single()
+
+      if (enData?.value != null) {
+        return enData.value as SiteConfig[K]
+      }
+    }
+
+    // Base key (Danish) or non-translatable key
     const { data } = await supabase
       .from("site_config")
       .select("value")
@@ -102,10 +138,13 @@ export const getSiteConfig = cache(async <K extends keyof SiteConfig>(
 })
 
 /**
- * Fetch ALL config in one query. Use when a page needs many config values.
+ * Fetch ALL config in one query, locale-aware.
  * Returns a full SiteConfig object with defaults for any missing keys.
+ * For English, _en keys override base keys.
  */
-export const getAllSiteConfig = cache(async (): Promise<SiteConfig> => {
+export const getAllSiteConfig = cache(async (
+  locale: CustomerLocale = "da"
+): Promise<SiteConfig> => {
   try {
     const supabase = await createClient()
     const { data } = await supabase
@@ -113,10 +152,29 @@ export const getAllSiteConfig = cache(async (): Promise<SiteConfig> => {
       .select("key, value")
 
     if (data && data.length > 0) {
-      const configMap = Object.fromEntries(
+      const allRows = Object.fromEntries(
         data.map((row: { key: string; value: unknown }) => [row.key, row.value])
       )
-      return { ...DEFAULTS, ...configMap } as SiteConfig
+
+      // Start from defaults + base (Danish) values
+      const config = { ...DEFAULTS }
+      for (const k of Object.keys(DEFAULTS) as (keyof SiteConfig)[]) {
+        if (allRows[k] != null) {
+          ;(config as Record<string, unknown>)[k] = allRows[k]
+        }
+      }
+
+      // If English, overlay _en values for translatable keys
+      if (locale === "en") {
+        for (const k of TRANSLATABLE_KEYS) {
+          const enKey = `${k}_en`
+          if (allRows[enKey] != null) {
+            ;(config as Record<string, unknown>)[k] = allRows[enKey]
+          }
+        }
+      }
+
+      return config as SiteConfig
     }
   } catch {
     // Fall through to defaults

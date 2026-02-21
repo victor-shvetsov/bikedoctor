@@ -1,5 +1,6 @@
 import { Star, Bike, Clock, ShieldCheck } from "lucide-react"
 import { getSiteConfig } from "@/lib/site-config"
+import type { CustomerLocale } from "@/lib/types"
 
 const ICON_MAP: Record<string, typeof Star> = {
   star: Star,
@@ -8,8 +9,8 @@ const ICON_MAP: Record<string, typeof Star> = {
   "shield-check": ShieldCheck,
 }
 
-export async function TrustBar() {
-  const stats = await getSiteConfig("trust_stats")
+export async function TrustBar({ locale = "da" }: { locale?: CustomerLocale } = {}) {
+  const stats = await getSiteConfig("trust_stats", locale)
 
   return (
     <section className="bg-card py-5 shadow-sm">

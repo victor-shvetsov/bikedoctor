@@ -9,7 +9,7 @@
 // =============================================================================
 
 import type { ComponentType } from "react"
-import type { PageContent } from "@/lib/types"
+import type { PageContent, CustomerLocale } from "@/lib/types"
 
 import { HomepageTemplate } from "@/components/templates/homepage-template"
 import { LocationTemplate } from "@/components/templates/location-template"
@@ -21,6 +21,7 @@ import { GenericTemplate } from "@/components/templates/generic-template"
 export interface TemplateProps {
   page: PageContent
   crossLinks: Pick<PageContent, "slug" | "h1" | "template_type">[]
+  locale: CustomerLocale
 }
 
 // Registry: template_type -> React component

@@ -1,17 +1,36 @@
-import type { Locale } from "./types"
+import type { Locale, CustomerLocale } from "./types"
 
-// Language strategy:
-// da = Danish  -- PRIMARY for customer-facing pages (SEO target market is Denmark)
-// en = English -- PRIMARY for admin, mechanic-facing pages; secondary for customer pages
-// ro = Romanian -- SECONDARY for admin, mechanic-facing pages (team language)
+// ===========================================================================
+// Language strategy
+// ===========================================================================
+// Customer-facing (public website):
+//   da = Danish  (PRIMARY, default, x-default for hreflang)
+//   en = English (secondary -- /en/ prefix in URL)
+//   NO Romanian on public site.
 //
-// All 3 languages are available everywhere. The default depends on context:
-//   Customer site: da (with toggle to en)
-//   Admin / internal: en (with toggle to ro)
-//   Booking flow: da (with toggle to en)
-export const defaultLocale: Locale = "da"
+// Internal / admin:
+//   da + en + ro -- all 3 available. Default: en.
+//
+// URL pattern:
+//   bikedoctor.dk/[slug]       = Danish (no prefix)
+//   bikedoctor.dk/en/[slug]    = English
+//   bikedoctor.dk/admin/*      = Internal (no locale prefix)
+// ===========================================================================
+
+export const defaultLocale: CustomerLocale = "da"
 export const adminDefaultLocale: Locale = "en"
+
+/** Customer-facing locales only (public site) */
+export const customerLocales: CustomerLocale[] = ["da", "en"]
+
+/** All locales including admin-only Romanian */
 export const locales: Locale[] = ["da", "en", "ro"]
+
+/** Validate a string as a CustomerLocale, fallback to "da" */
+export function parseCustomerLocale(value: string | undefined | null): CustomerLocale {
+  if (value === "en") return "en"
+  return "da"
+}
 
 const translations = {
   da: {

@@ -13,7 +13,7 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { CtaBanner } from "@/components/sections/cta-banner"
 import { CrossLinks } from "@/components/templates/cross-links"
 
-export function BikeTypeTemplate({ page, crossLinks }: TemplateProps) {
+export function BikeTypeTemplate({ page, crossLinks, locale }: TemplateProps) {
   return (
     <>
       <HeroSection
@@ -21,11 +21,12 @@ export function BikeTypeTemplate({ page, crossLinks }: TemplateProps) {
         subheadline={page.subheadline}
         ctaText={page.cta_text}
         badge="Specialist"
+        locale={locale}
       />
 
-      <TrustBar />
+      <TrustBar locale={locale} />
 
-      <HowItWorks />
+      <HowItWorks locale={locale} />
 
       {/* Placeholder sections -- detailed in Block 1.2 */}
       {/* service-detail */}

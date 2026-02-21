@@ -1,12 +1,11 @@
 // =============================================================================
-// Dynamic [slug] Route (Block 0.3)
+// Shared Page Renderer (used by both (da) and (en) route groups)
 // =============================================================================
-// The ENGINE that powers all 58+ public pages.
-// 1. Fetches page_content from Supabase by slug
-// 2. Resolves the correct template via template-registry
-// 3. Generates metadata (title, description, OG) from DB
-// 4. Renders JSON-LD structured data
-// 5. Pre-generates all published slugs at build time
+// DRY helper that handles:
+// 1. Fetching page_content from Supabase
+// 2. Generating metadata with hreflang alternates
+// 3. Rendering the correct template with locale
+// 4. JSON-LD structured data
 // =============================================================================
 
 import { notFound } from "next/navigation"
@@ -15,7 +14,8 @@ import { createClient } from "@/lib/supabase/server"
 import { createStaticClient } from "@/lib/supabase/static"
 import { resolveTemplate } from "@/lib/templates/template-registry"
 import { generateJsonLd } from "@/lib/schemas/json-ld"
-import type { PageContent } from "@/lib/types"
+import type { PageContent, CustomerLocale } from "@/lib/types"
+import { customerLocales, defaultLocale } from "@/lib/i18n"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bikedoctor.dk"
 
@@ -23,7 +23,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bikedoctor.dk"
 // Data fetching
 // ---------------------------------------------------------------------------
 
-async function getPageContent(slug: string): Promise<PageContent | null> {
+export async function getPageContent(
+  slug: string
+): Promise<PageContent | null> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("page_content")
@@ -36,7 +38,7 @@ async function getPageContent(slug: string): Promise<PageContent | null> {
   return data as PageContent
 }
 
-async function getCrossLinks(
+export async function getCrossLinks(
   slugs: string[]
 ): Promise<Pick<PageContent, "slug" | "h1" | "template_type">[]> {
   if (!slugs || slugs.length === 0) return []
@@ -52,35 +54,64 @@ async function getCrossLinks(
 }
 
 // ---------------------------------------------------------------------------
-// Metadata
+// URL helpers
 // ---------------------------------------------------------------------------
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
+/** Build the full URL for a page in a given locale */
+export function buildPageUrl(slug: string, locale: CustomerLocale): string {
+  const base = SITE_URL
+  if (slug === "/") {
+    return locale === "da" ? base : `${base}/en`
+  }
+  return locale === "da" ? `${base}/${slug}` : `${base}/en/${slug}`
+}
+
+/** Build hreflang alternates for a given slug */
+export function buildHreflangAlternates(slug: string) {
+  const alternates: Record<string, string> = {}
+  for (const locale of customerLocales) {
+    alternates[locale] = buildPageUrl(slug, locale)
+  }
+  // x-default points to Danish (primary market)
+  alternates["x-default"] = buildPageUrl(slug, defaultLocale)
+  return alternates
+}
+
+// ---------------------------------------------------------------------------
+// Metadata generator
+// ---------------------------------------------------------------------------
+
+export async function buildPageMetadata(
+  slug: string,
+  locale: CustomerLocale
+): Promise<Metadata> {
   const page = await getPageContent(slug)
 
   if (!page) {
-    return { title: "Side ikke fundet | BikeDoctor" }
+    const notFoundTitle =
+      locale === "da"
+        ? "Side ikke fundet | BikeDoctor"
+        : "Page not found | BikeDoctor"
+    return { title: notFoundTitle }
   }
 
-  const pageUrl = `${SITE_URL}/${page.slug}`
+  const pageUrl = buildPageUrl(slug, locale)
+  const canonicalUrl = page.canonical_url ?? pageUrl
+  const ogLocale = locale === "da" ? "da_DK" : "en_GB"
 
   return {
     title: page.meta_title,
     description: page.meta_description,
     alternates: {
-      canonical: page.canonical_url ?? pageUrl,
+      canonical: canonicalUrl,
+      languages: buildHreflangAlternates(slug),
     },
     openGraph: {
       title: page.meta_title,
       description: page.meta_description,
       url: pageUrl,
       siteName: "BikeDoctor",
-      locale: "da_DK",
+      locale: ogLocale,
       type: "website",
       ...(page.og_image_url ? { images: [{ url: page.og_image_url }] } : {}),
     },
@@ -88,50 +119,22 @@ export async function generateMetadata({
 }
 
 // ---------------------------------------------------------------------------
-// Static params (ISR: pre-generate all published slugs)
+// Page renderer component
 // ---------------------------------------------------------------------------
 
-export async function generateStaticParams() {
-  const supabase = createStaticClient()
-  const { data } = await supabase
-    .from("page_content")
-    .select("slug")
-    .eq("status", "published")
-    .neq("slug", "/") // Homepage has its own route at app/page.tsx
-
-  if (!data) return []
-
-  return data.map((row) => ({
-    slug: row.slug,
-  }))
-}
-
-// ---------------------------------------------------------------------------
-// Page component
-// ---------------------------------------------------------------------------
-
-export default async function SlugPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
+export async function renderPage(slug: string, locale: CustomerLocale) {
   const page = await getPageContent(slug)
 
   if (!page) {
     notFound()
   }
 
-  // Resolve template and fetch cross-links in parallel
   const Template = resolveTemplate(page.template_type)
   const crossLinks = await getCrossLinks(page.cross_link_slugs)
-
-  // Generate JSON-LD schemas
   const schemas = generateJsonLd(page)
 
   return (
     <>
-      {/* JSON-LD structured data */}
       {schemas.map((schema, index) => (
         <script
           key={index}
@@ -139,11 +142,25 @@ export default async function SlugPage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-
-      {/* Template renderer */}
       <main>
-        <Template page={page} crossLinks={crossLinks} />
+        <Template page={page} crossLinks={crossLinks} locale={locale} />
       </main>
     </>
   )
+}
+
+// ---------------------------------------------------------------------------
+// Static params (shared by both route groups)
+// ---------------------------------------------------------------------------
+
+export async function getAllPublishedSlugs() {
+  const supabase = createStaticClient()
+  const { data } = await supabase
+    .from("page_content")
+    .select("slug")
+    .eq("status", "published")
+    .neq("slug", "/")
+
+  if (!data) return []
+  return data.map((row) => ({ slug: row.slug }))
 }
