@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Poppins } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
-import { SiteHeader } from "@/components/sections/site-header"
+import { SiteHeaderServer } from "@/components/sections/site-header-server"
 import "./globals.css"
 
 const _poppins = Poppins({
@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="da">
       <body className="font-sans antialiased">
-        <SiteHeader />
+        <SiteHeaderServer />
         {children}
         <Analytics />
       </body>

@@ -31,7 +31,7 @@ CREATE POLICY "Service role can manage site_config"
 INSERT INTO site_config (key, value) VALUES
 
 -- Phone number
-('phone', '"{ \"number\": \"+45 52 52 34 97\", \"href\": \"tel:+4552523497\" }"'::jsonb),
+('phone', '{"number": "+45 52 52 34 97", "href": "tel:+4552523497"}'::jsonb),
 
 -- Navigation links
 ('nav_links', '[

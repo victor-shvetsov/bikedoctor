@@ -1,6 +1,15 @@
 import { Heart, Users, Wrench } from "lucide-react"
+import { getSiteConfig } from "@/lib/site-config"
 
-export function AboutSection() {
+const ICON_MAP: Record<string, typeof Heart> = {
+  heart: Heart,
+  users: Users,
+  wrench: Wrench,
+}
+
+export async function AboutSection() {
+  const about = await getSiteConfig("about")
+
   return (
     <section className="bd-section bg-card">
       <div className="bd-container">
@@ -24,44 +33,35 @@ export function AboutSection() {
           {/* Story block */}
           <div>
             <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
-              Vores historie
+              {about.badge}
             </span>
 
             <h2 className="bd-heading mt-4">
-              Fra en cykelsmed til dit{" "}
-              <span className="bd-heading-accent">personlige vaerksted pa hjul</span>
+              {about.heading}{" "}
+              <span className="bd-heading-accent">{about.headingAccent}</span>
             </h2>
 
-            <p className="bd-body mt-5">
-              BikeDoctor startede med en simpel ide: Hvad nu hvis cykelsmeden
-              kom til dig, i stedet for omvendt? Det der begyndte som en mand
-              med en kassevogn fuld af vaerktoj, er vokset til et team af
-              professionelle cykelsmede der daekker hele Sjaelland.
-            </p>
-
-            <p className="bd-body mt-4">
-              Vi tror pa personlig service. Derfor far du din egen faste
-              cykelsmed, som kender dine cykler og deres historik. Det handler
-              ikke bare om at fikse cykler -- det handler om at du altid foler
-              dig tryg.
-            </p>
+            {about.body.map((paragraph, i) => (
+              <p key={i} className={`bd-body ${i === 0 ? "mt-5" : "mt-4"}`}>
+                {paragraph}
+              </p>
+            ))}
 
             <div className="mt-8 flex flex-wrap gap-6">
-              {[
-                { icon: Heart, value: "2.500+", label: "Glade kunder" },
-                { icon: Users, value: "5+", label: "Cykelsmede" },
-                { icon: Wrench, value: "5.000+", label: "Reparationer" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex items-center gap-3">
-                  <div className="bd-icon !size-10">
-                    <stat.icon className="size-5" strokeWidth={1.5} />
+              {about.stats.map((stat) => {
+                const Icon = ICON_MAP[stat.icon] || Heart
+                return (
+                  <div key={stat.label} className="flex items-center gap-3">
+                    <div className="bd-icon !size-10">
+                      <Icon className="size-5" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-foreground">{stat.value}</p>
+                      <p className="text-xs text-muted-foreground">{stat.label}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-foreground">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground">{stat.label}</p>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>

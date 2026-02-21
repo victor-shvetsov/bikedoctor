@@ -3,27 +3,21 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Menu, X, Phone } from "lucide-react"
+import type { SiteConfigNavLink, SiteConfigPhone } from "@/lib/types"
 
 // ---------------------------------------------------------------------------
 // Site Header -- matches Figma
 // Transparent on top of hero, white bg on scroll. Logo left, nav center-right,
 // coral phone number far right. Mobile: hamburger menu.
-// Shared across ALL public pages.
+// Content driven by site_config via SiteHeaderServer wrapper.
 // ---------------------------------------------------------------------------
 
-const NAV_LINKS = [
-  { label: "Mobil cykelsmed", href: "/" },
-  { label: "Priser", href: "/priser" },
-  { label: "Til erhvervskunder", href: "/erhverv" },
-  { label: "Blog", href: "/blog" },
-  { label: "Om os", href: "/om-os" },
-  { label: "Kontakt", href: "/kontakt" },
-]
+interface SiteHeaderProps {
+  navLinks: SiteConfigNavLink[]
+  phone: SiteConfigPhone
+}
 
-const PHONE_NUMBER = "+45 52 52 34 97"
-const PHONE_HREF = "tel:+4552523497"
-
-export function SiteHeader() {
+export function SiteHeader({ navLinks, phone }: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -61,7 +55,7 @@ export function SiteHeader() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-7 lg:flex">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -77,18 +71,18 @@ export function SiteHeader() {
 
           {/* Phone */}
           <a
-            href={PHONE_HREF}
+            href={phone.href}
             className="flex items-center gap-1.5 text-[13px] font-bold tracking-wide text-accent transition-colors hover:text-accent/80"
           >
             <Phone className="size-3.5" strokeWidth={2.5} />
-            {PHONE_NUMBER}
+            {phone.number}
           </a>
         </div>
 
         {/* Mobile: phone + hamburger */}
         <div className="flex items-center gap-3 lg:hidden">
           <a
-            href={PHONE_HREF}
+            href={phone.href}
             className="flex items-center gap-1.5 text-xs font-bold text-accent"
             aria-label="Ring til os"
           >
@@ -110,7 +104,7 @@ export function SiteHeader() {
       {mobileOpen && (
         <div className="border-t border-border/50 bg-card px-5 pb-6 pt-4 shadow-lg lg:hidden">
           <div className="flex flex-col gap-4">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -121,11 +115,11 @@ export function SiteHeader() {
               </Link>
             ))}
             <a
-              href={PHONE_HREF}
+              href={phone.href}
               className="flex items-center gap-2 pt-2 text-sm font-bold text-accent"
             >
               <Phone className="size-4" strokeWidth={2.5} />
-              {PHONE_NUMBER}
+              {phone.number}
             </a>
           </div>
         </div>
