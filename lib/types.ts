@@ -146,6 +146,81 @@ export interface BookingFlowState {
 export type Locale = "da" | "en" | "ro"
 
 // ============================================================================
+// Site Config (global content layer)
+// ============================================================================
+
+export interface SiteConfigPhone {
+  number: string
+  href: string
+}
+
+export interface SiteConfigNavLink {
+  label: string
+  href: string
+}
+
+export interface SiteConfigUsp {
+  icon: string
+  text: string
+}
+
+export interface SiteConfigTrustStat {
+  icon: string
+  value: string
+  label: string
+}
+
+export interface SiteConfigStep {
+  icon: string
+  number: string
+  title: string
+  description: string
+}
+
+export interface SiteConfigHowItWorks {
+  heading: string
+  headingAccent: string
+  body: string
+  ctaText: string
+}
+
+export interface SiteConfigAbout {
+  badge: string
+  heading: string
+  headingAccent: string
+  body: string[]
+  stats: Array<{ icon: string; value: string; label: string }>
+}
+
+export interface SiteConfigCtaBanner {
+  heading: string
+  subtext: string
+  ctaText: string
+}
+
+export interface SiteConfigFooter {
+  companyName: string
+  cvr: string
+  address: string
+  email: string
+  copyright: string
+}
+
+/** All site_config keys and their typed values */
+export interface SiteConfig {
+  phone: SiteConfigPhone
+  nav_links: SiteConfigNavLink[]
+  hero_usps: SiteConfigUsp[]
+  trust_stats: SiteConfigTrustStat[]
+  how_it_works_steps: SiteConfigStep[]
+  how_it_works: SiteConfigHowItWorks
+  about: SiteConfigAbout
+  cta_banner: SiteConfigCtaBanner
+  hero_secondary_cta: string
+  footer: SiteConfigFooter
+}
+
+// ============================================================================
 // Page Content (CMS layer)
 // ============================================================================
 

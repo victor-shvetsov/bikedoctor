@@ -7,6 +7,7 @@
 // =============================================================================
 
 import type { TemplateProps } from "@/lib/templates/template-registry"
+import { getSiteConfig } from "@/lib/site-config"
 import { HeroSection } from "@/components/sections/hero-section"
 import { TestimonialsCarousel } from "@/components/sections/testimonials-carousel"
 import { VideoSection } from "@/components/sections/video-section"
@@ -19,7 +20,9 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { CoverageMapSection } from "@/components/sections/coverage-map-section"
 import { CtaBanner } from "@/components/sections/cta-banner"
 
-export function HomepageTemplate({ page }: TemplateProps) {
+export async function HomepageTemplate({ page }: TemplateProps) {
+  const ctaBanner = await getSiteConfig("cta_banner")
+
   return (
     <>
       {/* 1. Hero -- full-bleed photo, left-aligned text, coral CTA, Trustpilot badge */}
@@ -58,9 +61,9 @@ export function HomepageTemplate({ page }: TemplateProps) {
 
       {/* 11. Final CTA */}
       <CtaBanner
-        heading="Klar til at fa din cykel fikset?"
-        ctaText={page.cta_text}
-        subtext="Book pa 2 minutter -- vi kommer til dig."
+        heading={ctaBanner.heading}
+        ctaText={ctaBanner.ctaText}
+        subtext={ctaBanner.subtext}
       />
     </>
   )
