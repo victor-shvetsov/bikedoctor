@@ -12,7 +12,6 @@ import {
   HelpCircle,
 } from "lucide-react"
 
-// Map bike type slugs to icons
 const BIKE_ICONS: Record<string, typeof Bike> = {
   cykel: Bike,
   elcykel: Zap,
@@ -39,18 +38,18 @@ export async function BikeTypesGrid() {
   const bikeTypes = await getBikeTypes()
 
   return (
-    <section className="bg-background py-16 sm:py-20">
-      <div className="mx-auto max-w-5xl px-4">
+    <section className="bg-background py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-6">
         <div className="text-center">
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Vi reparerer alle cykeltyper
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-            Fra almindelige cykler til el-cykler og ladcykler
+            {"Fra almindelige cykler til el-cykler og ladcykler"}
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {bikeTypes.map((type) => {
             const Icon = BIKE_ICONS[type.slug] ?? Bike
             const pageSlug = `${type.slug}-reparation`
@@ -59,12 +58,12 @@ export async function BikeTypesGrid() {
               <Link
                 key={type.id}
                 href={`/${pageSlug}`}
-                className="flex flex-col items-center rounded-xl border border-border bg-card p-5 text-center transition-colors hover:border-accent/40"
+                className="group flex flex-col items-center rounded-2xl bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
-                <div className="flex size-12 items-center justify-center rounded-full bg-primary/5">
-                  <Icon className="size-6 text-primary" />
+                <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/[0.06]">
+                  <Icon className="size-7 text-primary transition-colors group-hover:text-accent" />
                 </div>
-                <p className="mt-3 text-sm font-medium text-foreground">
+                <p className="mt-4 text-sm font-medium text-foreground">
                   {type.name_da}
                 </p>
               </Link>
