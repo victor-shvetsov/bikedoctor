@@ -56,30 +56,36 @@ export const PHASES: Phase[] = [
     number: 0,
     label: "SEO Architecture & Content Layer",
     goal: "URL structure, keyword map, page templates, Supabase content layer (page_content table), dynamic [slug] routing. Foundation for ALL public pages.",
-    status: "active",
+    status: "done",
   },
   {
     number: 1,
     label: "Take Money",
-    goal: "Customer can find website, book a repair, pay, owner sees the order.",
+    goal: "Customer can find website, book a repair, pay, owner sees the order. Includes testimonials, video section, and all public page templates.",
     status: "active",
+  },
+  {
+    number: 1.5,
+    label: "Serviceaftale (Subscriptions)",
+    goal: "Annual subscription per bike type. Subscribers pay once/year, get unlimited repairs + priority booking. Stripe recurring billing.",
+    status: "upcoming",
   },
   {
     number: 2,
     label: "Operate Efficiently",
-    goal: "Full order lifecycle, customer portal, mechanic dashboard, quote/invoice flow.",
+    goal: "Full order lifecycle, customer portal with personal mechanic, mechanic dashboard, quote/invoice flow, customer-mechanic chat.",
     status: "upcoming",
   },
   {
     number: 3,
     label: "Scale Without Hiring",
-    goal: "Automation, inventory, geo-routing, full notifications, RBAC.",
+    goal: "Automation, inventory, geo-routing, map coverage section, full notifications, RBAC.",
     status: "upcoming",
   },
   {
     number: 4,
     label: "Dominate Search + AI Flywheel",
-    goal: "AI content generation, blog engine, business intelligence.",
+    goal: "AI content generation, blog engine, e-commerce (bikes + parts), business intelligence.",
     status: "upcoming",
   },
 ]
@@ -296,6 +302,29 @@ export const BLOCKS: Block[] = [
   },
 
   {
+    id: "1.1b",
+    name: "Testimonials Carousel + Video Section",
+    phase: 1,
+    phaseLabel: "Take Money",
+    status: "queued",
+    description:
+      "Two marketing-driven sections from the brand plan: (1) Auto-scrolling testimonials carousel with Trustpilot star branding -- narrow height, flows quickly to build trust. (2) Video embed section for the promo video ('How It Works' visual). Both reusable across all templates.",
+    ownerNotes: "Testimonials carousel should be narrow, auto-scroll, with Trustpilot stars. Video section can use a placeholder until the real promo video is shot. Also add a Trustpilot review ticker under the booking overlay (Block 1.5).",
+    files: [
+      { path: "components/sections/testimonials-carousel.tsx", status: "new", notes: "Auto-scrolling horizontal carousel, Trustpilot branding, narrow height" },
+      { path: "components/sections/video-section.tsx", status: "new", notes: "Responsive video embed with poster, lazy load" },
+    ],
+    acceptanceCriteria: [
+      { id: "1.1b-a", description: "Testimonials carousel auto-scrolls horizontally with smooth animation", met: false },
+      { id: "1.1b-b", description: "Trustpilot star rating and branding visible in carousel", met: false },
+      { id: "1.1b-c", description: "Video section renders responsive embedded video with poster image", met: false },
+      { id: "1.1b-d", description: "Both sections work in all templates (homepage, location, bike-type, brand)", met: false },
+      { id: "1.1b-e", description: "Carousel pauses on hover/focus for accessibility", met: false },
+    ],
+    dependsOn: ["1.1"],
+  },
+
+  {
     id: "1.2",
     name: "Location + Bike Type + Brand Templates",
     phase: 1,
@@ -330,8 +359,8 @@ export const BLOCKS: Block[] = [
     phaseLabel: "Take Money",
     status: "queued",
     description:
-      "Pricing page with full price table from DB (services + bike type surcharges). Info/about page with team, story, stats.",
-    ownerNotes: "",
+      "Pricing page with full price table from DB (services + bike type surcharges). Serviceaftale plans highlighted at top. Info/about page with founder story, personal journey from single mechanic to growing team.",
+    ownerNotes: "Pricing: Serviceaftale subscription tiers per bike type at top of page, gets extra visual attention. Per-service prices below. Internal links to service pages in headings. About page: personal founder story, growth narrative, mechanic team, mission -- not corporate, make it human.",
     files: [
       { path: "components/templates/pricing-template.tsx", status: "new", notes: "Full price table, FAQ, what's included" },
       { path: "components/templates/info-template.tsx", status: "new", notes: "About page: team, story, trust" },
@@ -381,8 +410,8 @@ export const BLOCKS: Block[] = [
     phaseLabel: "Take Money",
     status: "queued",
     description:
-      "Polish the booking overlay. Accepts booking presets from page_content (start step, preselected bike type/service). Bike type icons, step progress, service grouping, validation, animations.",
-    ownerNotes: "",
+      "Polish the booking overlay. Full-screen white overlay, subtle exit button top-right. 4 steps total, minimalistic UI. Accepts booking presets from page_content. Trustpilot review ticker flows under the booking interface.",
+    ownerNotes: "Full-screen white overlay. Subtle exit button top-right. Minimalistic -- no distractions from booking + paying. Trustpilot review carousel slowly flows UNDER the booking form -- large enough to read during booking, small enough to not steal attention. Presets from page determine which bike/service is preselected.",
     files: [
       { path: "components/booking/booking-overlay.tsx", status: "scaffolded", notes: "4-step flow. Must accept preset props from template" },
       { path: "components/booking/bike-type-step.tsx", status: "scaffolded", notes: "Bike type grid with icons" },
@@ -506,18 +535,20 @@ export const BLOCKS: Block[] = [
   // ---------------------------------------------------------------------------
   {
     id: "2.1",
-    name: "Customer Portal -- Phone + PIN Login",
+    name: "Customer Portal -- Phone + PIN Login + Personal Mechanic",
     phase: 2,
     phaseLabel: "Operate Efficiently",
     status: "queued",
     description:
-      "Customer-facing portal: see order status, approve quotes, view invoices. Login via phone number + 4-digit PIN sent by SMS.",
-    ownerNotes: "",
+      "Customer-facing portal. Login via SMS link with PIN code. Dashboard greets user with their assigned mechanic (photo, name, greeting). Shows user's bikes, order history per bike, direct booking. Constant feeling of support.",
+    ownerNotes: "Login: customer receives SMS with link + PIN. Dashboard first section: assigned mechanic photo, smiling face, short greeting, chat button. Next: list of bikes. Each bike -> order history -> book new visit. The person always feels someone is there. See BRAND.md USP 1 + 3.",
     files: [],
     acceptanceCriteria: [
-      { id: "2.1-a", description: "Phone + PIN login flow", met: false },
-      { id: "2.1-b", description: "Customer sees their order list with statuses", met: false },
-      { id: "2.1-c", description: "Customer can approve/reject quotes", met: false },
+      { id: "2.1-a", description: "SMS link + PIN login flow (no password)", met: false },
+      { id: "2.1-b", description: "Dashboard greets with assigned mechanic photo + name + chat button", met: false },
+      { id: "2.1-c", description: "User sees their bikes with order history per bike", met: false },
+      { id: "2.1-d", description: "Customer can book new visit from bike detail", met: false },
+      { id: "2.1-e", description: "Customer can approve/reject quotes", met: false },
     ],
     dependsOn: ["1.9"],
   },
@@ -572,6 +603,81 @@ export const BLOCKS: Block[] = [
     ],
     dependsOn: ["2.3"],
   },
+  {
+    id: "2.5",
+    name: "Customer-Mechanic Chat",
+    phase: 2,
+    phaseLabel: "Operate Efficiently",
+    status: "queued",
+    description:
+      "Async messaging between customer and their assigned mechanic. Chat button in customer portal mechanic section. Mechanic responds from mobile dashboard. Full context about customer's bikes.",
+    ownerNotes: "See BRAND.md USP 1: 'contact your mechanic'. Chat lives in customer portal and mechanic dashboard. Not real-time websockets (overkill) -- async with polling or Supabase realtime.",
+    files: [],
+    acceptanceCriteria: [
+      { id: "2.5-a", description: "Customer can send message to assigned mechanic from portal", met: false },
+      { id: "2.5-b", description: "Mechanic sees messages in mobile dashboard", met: false },
+      { id: "2.5-c", description: "Message history persisted per customer-mechanic pair", met: false },
+      { id: "2.5-d", description: "Unread message indicator in both portals", met: false },
+    ],
+    dependsOn: ["2.3", "2.1"],
+  },
+
+  // ---------------------------------------------------------------------------
+  // PHASE 1.5 -- "Serviceaftale" (Subscriptions)
+  // ---------------------------------------------------------------------------
+  {
+    id: "1.5a",
+    name: "Subscription Plans DB + Stripe Recurring",
+    phase: 1.5,
+    phaseLabel: "Serviceaftale (Subscriptions)",
+    status: "queued",
+    description:
+      "Database model for subscription plans (tiers per bike type), Stripe Products + Prices for recurring billing, subscription lifecycle (active/cancelled/expired).",
+    ownerNotes: "Annual subscription per bike type. Priced at ~20% below average annual repair spend. Different tiers: ladcykel > standard cykel. Subscribers get: priority booking, no per-visit fees, personal mechanic assignment.",
+    files: [],
+    acceptanceCriteria: [
+      { id: "1.5a-a", description: "Subscription plans table with tiers per bike type", met: false },
+      { id: "1.5a-b", description: "Stripe Products + Prices for each subscription tier (recurring/year)", met: false },
+      { id: "1.5a-c", description: "Customer subscriptions table with status tracking", met: false },
+      { id: "1.5a-d", description: "Webhook handles subscription lifecycle events", met: false },
+    ],
+    dependsOn: ["1.6"],
+  },
+  {
+    id: "1.5b",
+    name: "Subscription Signup in Booking Flow",
+    phase: 1.5,
+    phaseLabel: "Serviceaftale (Subscriptions)",
+    status: "queued",
+    description:
+      "Add Serviceaftale option in booking flow. Customer can choose subscription instead of one-off payment. Stripe Checkout for recurring. Pricing page highlights subscription plans.",
+    ownerNotes: "On pricing page, Serviceaftale plans go at top with extra visual attention. In booking overlay, after selecting bike type, option to choose subscription plan. See BRAND.md USP 2.",
+    files: [],
+    acceptanceCriteria: [
+      { id: "1.5b-a", description: "Booking overlay offers subscription option after bike type selection", met: false },
+      { id: "1.5b-b", description: "Stripe Checkout creates subscription (not one-off) when chosen", met: false },
+      { id: "1.5b-c", description: "Pricing page shows subscription tiers prominently at top", met: false },
+      { id: "1.5b-d", description: "Subscribers can book without per-visit payment", met: false },
+    ],
+    dependsOn: ["1.5a"],
+  },
+  {
+    id: "1.5c",
+    name: "Subscription Management (Portal + Admin)",
+    phase: 1.5,
+    phaseLabel: "Serviceaftale (Subscriptions)",
+    status: "queued",
+    description:
+      "Customer portal shows active subscription, renewal date, manage/cancel. Admin sees all subscriptions, revenue, churn.",
+    ownerNotes: "",
+    files: [],
+    acceptanceCriteria: [
+      { id: "1.5c-a", description: "Customer sees active subscription in portal with renewal date", met: false },
+      { id: "1.5c-b", description: "Customer can cancel subscription (goes to end of period)", met: false },
+      { id: "1.5c-c", description: "Admin dashboard shows subscription metrics", met: false },
+    ],
+    dependsOn: ["1.5b", "2.1"],
+  },
 
   // ---------------------------------------------------------------------------
   // PHASE 3 -- "Scale Without Hiring" (blocks detailed later)
@@ -590,6 +696,23 @@ export const BLOCKS: Block[] = [
       { id: "3.1-b", description: "Low stock alerts", met: false },
     ],
     dependsOn: ["2.4"],
+  },
+  {
+    id: "3.2",
+    name: "Map Coverage Section",
+    phase: 3,
+    phaseLabel: "Scale Without Hiring",
+    status: "queued",
+    description:
+      "Interactive map showing coverage areas with polygons per mechanic. Location links overlay. Used on homepage, location pages, and coverage/about pages.",
+    ownerNotes: "Polygons assigned to specific mechanics. Internal location links in the map. Requires mechanic geo-zones from Block 2.3/3.1. See marketing plan section 2.9.",
+    files: [],
+    acceptanceCriteria: [
+      { id: "3.2-a", description: "Interactive map with coverage polygons per mechanic zone", met: false },
+      { id: "3.2-b", description: "Clickable location links on the map", met: false },
+      { id: "3.2-c", description: "Works on homepage, location pages, and coverage page", met: false },
+    ],
+    dependsOn: ["2.3", "3.1"],
   },
 
   // ---------------------------------------------------------------------------

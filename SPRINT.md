@@ -9,12 +9,13 @@
 
 ## How This System Works
 
-### Governance Files (5 total -- the ONLY source of truth)
+### Governance Files (6 total -- the ONLY source of truth)
 1. **SPRINT.md** (this file) = Quick reference + AI instructions
 2. **lib/sprint-data.ts** = STRUCTURED source of truth: all blocks, acceptance criteria, files, owner notes. Drives the Sprint Board UI at /sprint.
 3. **BUILD_STRATEGY.md** = The 5-phase master plan (Phase 0-4). Never changes unless scope changes.
-4. **lib/site-architecture.ts** = COMPLETE website SEO map: every URL, keyword, heading, schema type, booking preset, cross-links. READ before building ANY public page.
-5. **lib/page-templates.ts** = Section blueprints for every page TYPE: what sections, what order, what content, what conversion elements.
+4. **BRAND.md** = Brand voice, USPs, target customer, emotional triggers. READ before building ANY public-facing UI.
+5. **lib/site-architecture.ts** = COMPLETE website SEO map: every URL, keyword, heading, schema type, booking preset, cross-links. READ before building ANY public page.
+6. **lib/page-templates.ts** = Section blueprints for every page TYPE: what sections, what order, what content, what conversion elements.
 
 ### Stale Files (DO NOT use for planning)
 - **v0_plans/efficient-design.md** -- Historical plan for the /project-map page (already built). Superseded by the 5 governance files above.
@@ -105,11 +106,12 @@ Basic layout + pages. No auth yet (Block 1.7). No page editor yet (Block 1.9).
 |-------|------|--------|------------|
 | **0.1** | SEO Architecture & Keyword Map | DONE | -- |
 | **0.2** | Supabase Content Layer | DONE | 0.1 |
-| **0.3** | Dynamic [slug] Route + Template Renderer | **DONE** | 0.2 |
+| **0.3** | Dynamic [slug] Route + Template Renderer | DONE | 0.2 |
 | **0.4** | Audit Fix: RLS + Validation + i18n | DONE | 0.2 |
 | **0.5** | Audit Fix: Webhook + Sitemap + Errors | DONE | 0.4 |
 | **1.0** | Foundation: DB + Stripe + Types | DONE | -- |
-| **1.1** | Homepage -- Conversion Landing Page | **DONE** | 0.3 |
+| **1.1** | Homepage -- Conversion Landing Page | DONE | 0.3 |
+| **1.1b** | Testimonials Carousel + Video Section | QUEUED | 1.1 |
 | **1.2** | Location + Bike Type + Brand Templates | QUEUED | 1.1 |
 | **1.3** | Pricing + Info Pages | QUEUED | 1.1 |
 | **1.4** | Navbar + Footer + Public Layout | QUEUED | 0.3 |
@@ -118,11 +120,16 @@ Basic layout + pages. No auth yet (Block 1.7). No page editor yet (Block 1.9).
 | **1.7** | Admin Authentication | QUEUED | 1.6 |
 | **1.8** | Admin Dashboard -- Order Management | QUEUED | 1.7 |
 | **1.9** | Admin Page Editor -- Content Management | QUEUED | 1.8 |
-| **2.1** | Customer Portal | QUEUED | 1.9 |
+| **1.5a** | Subscription Plans DB + Stripe Recurring | QUEUED | 1.6 |
+| **1.5b** | Subscription Signup in Booking Flow | QUEUED | 1.5a |
+| **1.5c** | Subscription Management (Portal + Admin) | QUEUED | 1.5b, 2.1 |
+| **2.1** | Customer Portal + Personal Mechanic | QUEUED | 1.9 |
 | **2.2** | Order State Machine + Quote Flow | QUEUED | 2.1 |
 | **2.3** | Mechanic Mobile Dashboard | QUEUED | 2.2 |
 | **2.4** | Invoice + Payment Capture | QUEUED | 2.3 |
+| **2.5** | Customer-Mechanic Chat | QUEUED | 2.3, 2.1 |
 | **3.1** | Inventory Management | QUEUED | 2.4 |
+| **3.2** | Map Coverage Section | QUEUED | 2.3, 3.1 |
 | **4.1** | Blog Engine + Article Templates | QUEUED | 1.2 |
 | **4.2** | E-commerce: Bike Sales + Parts Shop | QUEUED | 1.3 |
 
