@@ -74,18 +74,39 @@ Your own dashboard: bikes, repair history, invoices, direct booking, and persona
 
 ---
 
+## Homepage Layout (canonical section order)
+
+The homepage is the primary conversion page. This is the definitive section order:
+
+| # | Section | Emotional job | Design notes |
+|---|---------|--------------|--------------|
+| 1 | **Hero** | Instant clarity + urgency | Headline, short paragraph, 3 USP highlights (icon + text), primary CTA (opens booking modal), secondary CTA (scroll to How It Works), background image placeholder |
+| 2 | **Testimonials** | Social proof | Horizontal auto-scrolling carousel, Trustpilot-style stars, compact height |
+| 3 | **How It Works (Video)** | Show real experience | Large video placeholder, short intro text above |
+| 4 | **How It Works (Steps)** | Reduce uncertainty | 4-step grid: Choose bike, Select service plan, Pick time, We come & fix |
+| 5 | **Pricing** | Transparency + upsell | Highlighted subscription card ("Most Popular"), other services in grid, each: title, description, price, CTA |
+| 6 | **About** | Personal trust | Image + short story block, trust-driven layout |
+| 7 | **App Preview** | Show the product | Dashboard mockup placeholder, assigned mechanic card, bike list preview, chat button |
+| 8 | **FAQ** | Remove objections | Accordion layout |
+| 9 | **Coverage Map** | "We serve YOUR area" | Map placeholder, mechanic coverage areas, location links |
+| 10 | **Large Final CTA** | Last conversion push | Emotional headline, strong centered CTA |
+| 11 | **Footer** | Navigation + trust | Logo, navigation, contact, legal |
+
+**Global behavior:** "Book Now" CTA in multiple sections. CTA opens full-screen booking modal (4-step flow). Clean component structure, fully responsive, SEO-friendly.
+
 ## Key Content Sections (marketing-driven)
 
-These sections appear across the site. Each has a specific emotional job:
+These sections appear across ALL page types (not just homepage):
 
 | Section | Emotional job | Notes |
 |---------|--------------|-------|
-| Hero | Instant clarity + urgency | Headline, USP pills, one coral CTA |
+| Hero | Instant clarity + urgency | Headline, USP highlights, coral CTA |
 | Testimonials carousel | Social proof | Trustpilot branding, auto-scroll, narrow height |
 | How It Works (video) | Show the real experience | Embedded promo video above/alongside steps |
-| How It Works (steps) | Reduce uncertainty | 3 simple steps with icons |
+| How It Works (steps) | Reduce uncertainty | 4 steps with icons |
 | Pricing | Transparency + Serviceaftale upsell | Subscription plans at top, per-service below |
 | About BikeDoctor | Personal trust | Founder story, single mechanic -> growing team |
+| App Preview | Show the digital product | Dashboard mockup, mechanic card, bike list, chat |
 | Map coverage | "We serve YOUR area" | Polygons per mechanic, location links |
 | Booking overlay | Frictionless conversion | Trustpilot ticker under form during checkout |
 

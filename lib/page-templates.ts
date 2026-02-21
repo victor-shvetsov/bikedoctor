@@ -20,10 +20,13 @@
 export type SectionType =
   | "hero"
   | "trust-bar"
+  | "testimonials"
+  | "video-section"
   | "services-grid"
   | "service-detail"
   | "price-table"
   | "how-it-works"
+  | "how-it-works-steps"
   | "coverage-map"
   | "bike-types-grid"
   | "brand-info"
@@ -37,6 +40,8 @@ export type SectionType =
   | "blog-content"
   | "blog-related"
   | "cta-banner"
+  | "about-section"
+  | "app-preview"
   | "about-team"
   | "contact-info"
   | "breadcrumbs"
@@ -94,92 +99,111 @@ export const HOMEPAGE_TEMPLATE: PageTemplate = {
   userMindset: "I have a bike problem, I want someone to come fix it. Or I'm browsing.",
   conversionGoal: "Click 'Book nu' and enter booking flow",
   sections: [
+    // ---------- 1. Hero ----------
     {
       type: "hero",
       purpose: "Immediately answer: what is BikeDoctor, what do you do, why should I care?",
-      content: "H1 with primary keyword. Subheading with value prop (we come to you). Prominent 'Book nu' CTA button. Trust signals below (5-star rating, number of repairs done, response time). Background: real photo or illustration of mechanic at someone's door.",
-      conversionElement: "Primary 'Book nu' button -- opens booking overlay at step 1 (choose bike type).",
+      content: "H1 headline. Short supporting paragraph. 3 USP highlights (icon + short text). Primary CTA (opens booking modal). Secondary CTA (scroll to How It Works). Background image placeholder.",
+      conversionElement: "Primary 'Book nu' button -- opens booking overlay. Secondary scrolls to how-it-works.",
       required: true,
-      mobileNotes: "CTA must be above fold. Trust signals stack vertically. Full-width button.",
+      mobileNotes: "CTA above fold. USPs stack vertically. Full-width buttons.",
       buildPhase: "mvp",
     },
+    // ---------- 2. Testimonials ----------
     {
-      type: "trust-bar",
-      purpose: "Instant credibility -- reduce friction before they scroll further.",
-      content: "Horizontal strip with 3-4 trust badges: number of happy customers, average rating, 'same day service', 'no fix no fee' or similar guarantee. Use real numbers when available.",
+      type: "testimonials",
+      purpose: "Social proof -- Trustpilot-style stars create immediate trust before they read anything else.",
+      content: "Horizontal auto-scrolling carousel. Trustpilot-style star visuals. Compact height. Real or placeholder reviews.",
       required: true,
-      mobileNotes: "Scrollable horizontally or 2x2 grid on mobile.",
+      mobileNotes: "Single card visible, auto-scrolls. Pause on touch.",
       buildPhase: "mvp",
     },
+    // ---------- 3. How It Works (Video) ----------
     {
-      type: "how-it-works",
-      purpose: "Remove confusion about how mobile repair works. Key question: 'How does this actually work?'",
-      content: "3-step visual: 1) Book online -- pick bike type, services, time. 2) We come to you -- mechanic arrives at your address. 3) Fixed and ready -- pay when done. Each step has icon + short text.",
-      conversionElement: "Small 'Book nu' link after step 3.",
+      type: "video-section",
+      purpose: "Show the real experience -- a video is worth 1000 words for a service business.",
+      content: "Large video placeholder (16:9). Short intro text above: 'Se hvordan det fungerer'. Ready for real promo video embed.",
       required: true,
-      mobileNotes: "Steps stack vertically. Icons 48px.",
+      mobileNotes: "Full-width video. Text above.",
       buildPhase: "mvp",
     },
+    // ---------- 4. How It Works (Steps) ----------
     {
-      type: "services-grid",
-      purpose: "Show what you fix -- answer 'Can they fix MY problem?'",
-      content: "Grid of service categories with icons and starting price. Categories: Repairs (gear, brakes, flat tire, chain), Service (complete service, e-bike service), Safety (light check, safety check). Each links to booking with that service pre-selected. Prices shown from the DB (service_catalog table).",
-      conversionElement: "Each service card is clickable -- opens booking with that service pre-selected.",
+      type: "how-it-works-steps",
+      purpose: "Remove confusion about how mobile repair works. 4-step grid with icons.",
+      content: "4-step grid: 1) Vaelg cykel (choose bike), 2) Vaelg serviceplan (select service plan), 3) Vaelg tid (pick time), 4) Vi kommer og fikser (we come & fix). Each step has icon + title + short text.",
+      conversionElement: "Small 'Book nu' link after steps.",
       required: true,
-      mobileNotes: "2-column grid. Cards must be tap-friendly (min 48px touch target).",
+      mobileNotes: "2x2 grid on mobile, 4-col on desktop.",
       buildPhase: "mvp",
     },
+    // ---------- 5. Pricing ----------
     {
-      type: "bike-types-grid",
-      purpose: "Show you handle ALL bike types -- especially e-bikes and cargo bikes (high value).",
-      content: "Visual grid of bike types: Regular, E-bike, Cargo bike, Fat bike, Kids bike, Wheelchair, E-scooter, Other. Each with small illustration/icon. Links to the bike-type specific page. From bike_types table.",
-      conversionElement: "Each card links to /[bike-type]-reparation page.",
+      type: "price-table",
+      purpose: "Transparency + Serviceaftale upsell. Highlighted subscription card at top.",
+      content: "Highlighted subscription card marked 'Mest populaer'. Other services below in grid. Each card: title, short description, price, CTA button. Services from DB. Subscription placeholder until Phase 1.5.",
+      conversionElement: "Each card CTA opens booking with that service pre-selected.",
       required: true,
-      mobileNotes: "Horizontal scroll or 2-column grid.",
+      mobileNotes: "Subscription card full-width. Service cards 1-col mobile, 2-col tablet, 3-col desktop.",
       buildPhase: "mvp",
     },
+    // ---------- 6. About ----------
     {
-      type: "coverage-map",
-      purpose: "Answer 'Do you come to MY area?' -- critical for local service.",
-      content: "Map or visual showing coverage area (Copenhagen + Sjælland). List of popular areas as links (each links to the location page). Emphasize 'we cover all of Copenhagen and surrounding areas'.",
-      conversionElement: "Area links go to location pages. 'Book nu' button below map.",
+      type: "about-section",
+      purpose: "Personal trust -- founder story creates human connection.",
+      content: "Image placeholder + short story block. Trust-driven layout. Founder journey from single mechanic to growing team.",
       required: true,
-      mobileNotes: "List of locations works better than map on mobile. Collapsible by region.",
-      buildPhase: "v2",
+      mobileNotes: "Image above text on mobile, side-by-side on desktop.",
+      buildPhase: "mvp",
     },
+    // ---------- 7. App Preview ----------
     {
-      type: "reviews",
-      purpose: "Social proof -- real customer voices close the trust gap.",
-      content: "3-5 customer reviews with name, location, rating, and short quote. Ideally pulled from Google Reviews or Trustpilot. If not available yet, use placeholder structure ready for real data.",
+      type: "app-preview",
+      purpose: "Show the digital product -- customer portal preview builds desire for the subscription.",
+      content: "Dashboard mockup placeholder. Assigned mechanic card. Bike list preview. Chat button. Shows what subscribers get access to.",
       required: true,
-      mobileNotes: "Horizontal scroll carousel. One review visible at a time.",
-      buildPhase: "v2",
+      mobileNotes: "Stacked mockup cards. Scroll horizontal if needed.",
+      buildPhase: "mvp",
     },
-    {
-      type: "ecommerce-featured",
-      purpose: "Upsell -- some visitors might want to buy a bike, not just repair one.",
-      content: "Small section: 'Bikes for sale' with 3-4 featured bikes (if shop is live). Links to /cykler-til-salg. Only shown when e-commerce module is active.",
-      conversionElement: "Links to shop pages.",
-      required: false,
-      mobileNotes: "Horizontal scroll cards.",
-      buildPhase: "v3",
-    },
+    // ---------- 8. FAQ ----------
     {
       type: "faq",
       purpose: "Answer remaining objections + capture long-tail keywords.",
-      content: "6-8 FAQs: How does it work? What areas do you cover? How much does it cost? Do you fix e-bikes? How fast can you come? What if you can't fix it? What payment methods? Uses schema FAQ markup.",
+      content: "6-8 FAQs in accordion layout. Uses schema FAQ markup.",
       required: true,
       mobileNotes: "Accordion pattern. One open at a time.",
       buildPhase: "mvp",
     },
+    // ---------- 9. Coverage Map ----------
+    {
+      type: "coverage-map",
+      purpose: "Answer 'Do you come to MY area?' -- map with mechanic coverage zones + location links.",
+      content: "Map placeholder. Mechanic coverage areas. Location links to area pages.",
+      conversionElement: "Area links go to location pages. 'Book nu' button below.",
+      required: true,
+      mobileNotes: "Location link list on mobile, map on desktop.",
+      buildPhase: "mvp",
+    },
+    // ---------- 10. Large Final CTA ----------
     {
       type: "cta-banner",
-      purpose: "Final push -- catch anyone who scrolled all the way down.",
-      content: "Full-width banner: 'Ready to get your bike fixed? Book in 2 minutes.' with prominent CTA button.",
+      purpose: "Final push -- emotional headline + strong centered CTA.",
+      content: "Emotional headline. Strong centered CTA. Full-width navy background.",
       conversionElement: "Final 'Book nu' CTA button.",
       required: true,
-      mobileNotes: "Sticky bottom bar alternative on mobile.",
+      mobileNotes: "Full-width. CTA button prominent.",
       buildPhase: "mvp",
+    },
+    // ---------- 11. Footer (rendered in layout, not here) ----------
+    // ---------- E-commerce (v3) ----------
+    {
+      type: "ecommerce-featured",
+      purpose: "Upsell -- bikes for sale if e-commerce module is active.",
+      content: "3-4 featured bikes. Links to /cykler-til-salg.",
+      conversionElement: "Links to shop pages.",
+      required: false,
+      mobileNotes: "Horizontal scroll cards.",
+      buildPhase: "v3",
     },
     {
       type: "schema-json-ld",
