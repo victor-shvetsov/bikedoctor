@@ -27,6 +27,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // lang attribute set by (da) and (en) route group layouts via <html> override
+  // Defaulting to "da" here as the base fallback
   return (
     <html lang="da">
       <body className="font-sans antialiased">

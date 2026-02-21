@@ -2,17 +2,21 @@ import Link from "next/link"
 import Image from "next/image"
 import { Clock, ChevronDown, Shield, Zap, Truck } from "lucide-react"
 import { getSiteConfig } from "@/lib/site-config"
+import type { CustomerLocale } from "@/lib/types"
 
 // ---------------------------------------------------------------------------
 // Hero Section -- centered layout
 // Content driven by: h1/subheadline/ctaText from page_content (props),
-// USP labels + secondary CTA text from site_config (DB).
+// USP labels + secondary CTA text from site_config (DB, locale-aware).
 // ---------------------------------------------------------------------------
 
 interface HeroSectionProps {
   h1: string
   subheadline?: string | null
   ctaText: string
+  badge?: string
+  showPricingLink?: boolean
+  locale?: CustomerLocale
 }
 
 const ICON_MAP: Record<string, typeof Truck> = {
@@ -21,10 +25,10 @@ const ICON_MAP: Record<string, typeof Truck> = {
   shield: Shield,
 }
 
-export async function HeroSection({ h1, subheadline, ctaText }: HeroSectionProps) {
+export async function HeroSection({ h1, subheadline, ctaText, locale = "da" }: HeroSectionProps) {
   const [usps, secondaryCta] = await Promise.all([
-    getSiteConfig("hero_usps"),
-    getSiteConfig("hero_secondary_cta"),
+    getSiteConfig("hero_usps", locale),
+    getSiteConfig("hero_secondary_cta", locale),
   ])
 
   return (

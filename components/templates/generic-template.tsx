@@ -12,7 +12,7 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { CtaBanner } from "@/components/sections/cta-banner"
 import { CrossLinks } from "@/components/templates/cross-links"
 
-export function GenericTemplate({ page, crossLinks }: TemplateProps) {
+export function GenericTemplate({ page, crossLinks, locale }: TemplateProps) {
   return (
     <>
       <HeroSection
@@ -20,9 +20,10 @@ export function GenericTemplate({ page, crossLinks }: TemplateProps) {
         subheadline={page.subheadline}
         ctaText={page.cta_text}
         showPricingLink={false}
+        locale={locale}
       />
 
-      <TrustBar />
+      <TrustBar locale={locale} />
 
       <FaqSection faqs={page.faqs} />
 

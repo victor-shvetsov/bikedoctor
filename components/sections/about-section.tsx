@@ -1,5 +1,6 @@
 import { Heart, Users, Wrench } from "lucide-react"
 import { getSiteConfig } from "@/lib/site-config"
+import type { CustomerLocale } from "@/lib/types"
 
 const ICON_MAP: Record<string, typeof Heart> = {
   heart: Heart,
@@ -7,8 +8,8 @@ const ICON_MAP: Record<string, typeof Heart> = {
   wrench: Wrench,
 }
 
-export async function AboutSection() {
-  const about = await getSiteConfig("about")
+export async function AboutSection({ locale = "da" }: { locale?: CustomerLocale } = {}) {
+  const about = await getSiteConfig("about", locale)
 
   return (
     <section className="bd-section bg-card">

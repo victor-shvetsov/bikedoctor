@@ -13,7 +13,7 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { CtaBanner } from "@/components/sections/cta-banner"
 import { CrossLinks } from "@/components/templates/cross-links"
 
-export function BrandTemplate({ page, crossLinks }: TemplateProps) {
+export function BrandTemplate({ page, crossLinks, locale }: TemplateProps) {
   // Extract brand name from h1 (e.g. "Babboe Service & Reparation" -> "Babboe")
   const brandName =
     page.h1.split(/\s+(?:service|reparation|-)/i)[0]?.trim() ?? page.h1
@@ -25,11 +25,12 @@ export function BrandTemplate({ page, crossLinks }: TemplateProps) {
         subheadline={page.subheadline}
         ctaText={page.cta_text}
         badge="Autoriseret service"
+        locale={locale}
       />
 
-      <TrustBar />
+      <TrustBar locale={locale} />
 
-      <HowItWorks />
+      <HowItWorks locale={locale} />
 
       {/* Placeholder sections -- detailed in Block 1.2 */}
       {/* service-detail (brand expertise) */}

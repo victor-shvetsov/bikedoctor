@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Bike, Settings, CalendarCheck, Wrench } from "lucide-react"
 import { getSiteConfig } from "@/lib/site-config"
+import type { CustomerLocale } from "@/lib/types"
 
 const ICON_MAP: Record<string, typeof Bike> = {
   bike: Bike,
@@ -9,10 +10,10 @@ const ICON_MAP: Record<string, typeof Bike> = {
   wrench: Wrench,
 }
 
-export async function HowItWorks() {
+export async function HowItWorks({ locale = "da" }: { locale?: CustomerLocale } = {}) {
   const [steps, section] = await Promise.all([
-    getSiteConfig("how_it_works_steps"),
-    getSiteConfig("how_it_works"),
+    getSiteConfig("how_it_works_steps", locale),
+    getSiteConfig("how_it_works", locale),
   ])
 
   return (

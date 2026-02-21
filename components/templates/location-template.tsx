@@ -14,7 +14,7 @@ import { FaqSection } from "@/components/sections/faq-section"
 import { CtaBanner } from "@/components/sections/cta-banner"
 import { CrossLinks } from "@/components/templates/cross-links"
 
-export function LocationTemplate({ page, crossLinks }: TemplateProps) {
+export function LocationTemplate({ page, crossLinks, locale }: TemplateProps) {
   // Extract location name from h1 (e.g. "Cykelsmed i K\u00f8benhavn -- Vi kommer til dig" -> "K\u00f8benhavn")
   const locationMatch = page.h1.match(/i\s+(.+?)(?:\s*[-\u2013\u2014]|$)/)
   const locationName = locationMatch?.[1]?.trim() ?? ""
@@ -26,11 +26,12 @@ export function LocationTemplate({ page, crossLinks }: TemplateProps) {
         subheadline={page.subheadline}
         ctaText={page.cta_text}
         badge="Mobil cykelsmed"
+        locale={locale}
       />
 
-      <TrustBar />
+      <TrustBar locale={locale} />
 
-      <HowItWorks />
+      <HowItWorks locale={locale} />
 
       {/* Placeholder sections -- detailed in Block 1.2 */}
       {/* services-grid (compact / location-relevant) */}

@@ -21,12 +21,14 @@ Goal: Customer can find website, book a repair, pay, owner sees the order.
 | # | Feature | Module | Status | Key Tables |
 |---|---------|--------|--------|------------|
 | 1 | Supabase schema + Stripe + types + i18n | Foundation | DONE | All core tables |
+| 1b | site_config table + getSiteConfig() + locale-aware content | Foundation | DONE | site_config |
+| 1c | i18n route groups (da) + (en)/en/ + hreflang + lang switcher | Foundation | DONE | -- |
 | 2 | Homepage -- conversion landing page | Public Website | DONE | page_content, service_catalog, bike_types |
 | 3 | Location + bike type + brand templates | Public Website | QUEUED | page_content |
 | 4 | Pricing + info pages | Public Website | QUEUED | service_catalog, page_content |
-| 5 | Navbar + footer + layout | Public Website | QUEUED | -- |
-| 6 | Testimonials carousel | Public Website | QUEUED | -- (Trustpilot widget or seeded reviews) |
-| 7 | Video embed section | Public Website | QUEUED | page_content |
+| 5 | Navbar + footer + layout | Public Website | DONE | site_config |
+| 6 | Testimonials carousel | Public Website | DONE | -- (seeded reviews) |
+| 7 | Video embed section | Public Website | DONE | page_content |
 | 8 | Booking overlay -- complete flow | Booking | QUEUED | service_catalog, bike_types, bookings |
 | 9 | Stripe payment -- end-to-end | Booking | QUEUED | payments, bookings |
 | 10 | Admin authentication | Admin | QUEUED | -- |
