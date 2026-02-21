@@ -5,39 +5,39 @@ const STEPS = [
   {
     icon: Bike,
     number: "1",
-    title: "V\u00e6lg cykel",
-    description: "Fort\u00e6l os hvilken type cykel der skal repareres.",
+    title: "Vaelg cykel",
+    description: "Fortael os hvilken type cykel der skal repareres.",
   },
   {
     icon: Settings,
     number: "2",
-    title: "V\u00e6lg serviceplan",
-    description: "V\u00e6lg de ydelser du har brug for, eller v\u00e6lg en Serviceaftale.",
+    title: "Vaelg serviceplan",
+    description: "Vaelg de ydelser du har brug for, eller vaelg en Serviceaftale.",
   },
   {
     icon: CalendarCheck,
     number: "3",
-    title: "V\u00e6lg tid",
-    description: "Book et tidspunkt der passer dig \u2014 vi er fleksible.",
+    title: "Vaelg tid",
+    description: "Book et tidspunkt der passer dig -- vi er fleksible.",
   },
   {
     icon: Wrench,
     number: "4",
     title: "Vi kommer og fikser",
-    description: "Vores cykelsmed kommer til dig med alt professionelt v\u00e6rkt\u00f8j.",
+    description: "Vores cykelsmed kommer til dig med alt professionelt vaerktoj.",
   },
 ]
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-background py-20 sm:py-24">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="how-it-works" className="bd-section bg-background">
+      <div className="bd-container">
         <div className="text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {"S\u00e5dan fungerer det"}
+          <h2 className="bd-heading">
+            Sadan <span className="bd-heading-accent">fungerer det</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-            {"F\u00e5 din cykel repareret i 4 enkle trin"}
+          <p className="bd-body mx-auto mt-3 max-w-xl">
+            Fa din cykel repareret i 4 enkle trin
           </p>
         </div>
 
@@ -45,11 +45,10 @@ export function HowItWorks() {
           {STEPS.map((step) => (
             <div
               key={step.number}
-              className="group relative flex flex-col items-center rounded-2xl bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md sm:p-8"
+              className="bd-card group flex flex-col items-center text-center transition-shadow hover:shadow-md"
             >
-              {/* Step number badge */}
-              <div className="flex size-14 items-center justify-center rounded-2xl bg-accent/10">
-                <span className="text-xl font-bold text-accent">
+              <div className="bd-icon">
+                <span className="text-xl font-bold">
                   {step.number}
                 </span>
               </div>
@@ -68,7 +67,7 @@ export function HowItWorks() {
             href="/#book"
             className="text-sm font-semibold text-accent underline-offset-4 transition-colors hover:underline"
           >
-            {"Book nu \u2014 det tager kun 2 minutter"}
+            Book nu -- det tager kun 2 minutter
           </Link>
         </div>
       </div>

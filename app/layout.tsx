@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Poppins } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+const _poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "BikeDoctor | Mobil Cykelsmed -- Vi kommer til dig",

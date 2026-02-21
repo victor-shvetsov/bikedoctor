@@ -13,15 +13,15 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     name: "Maria S.",
-    location: "K\u00f8benhavn",
+    location: "Kobenhavn",
     rating: 5,
-    text: "Super hurtig og professionel service. Min cykel blev fikset p\u00e5 under en time hjemme hos mig!",
+    text: "Super hurtig og professionel service. Min cykel blev fikset pa under en time hjemme hos mig!",
   },
   {
     name: "Anders J.",
     location: "Frederiksberg",
     rating: 5,
-    text: "Endelig en cykelsmed der kommer til d\u00f8ren. Bestilte om morgenen, fikset om eftermiddagen.",
+    text: "Endelig en cykelsmed der kommer til doren. Bestilte om morgenen, fikset om eftermiddagen.",
   },
   {
     name: "Line K.",
@@ -31,21 +31,21 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     name: "Thomas P.",
-    location: "N\u00f8rrebro",
+    location: "Norrebro",
     rating: 5,
-    text: "Min el-cykel havde brug for service. BikeDoctor fik den til at k\u00f8re som ny igen.",
+    text: "Min el-cykel havde brug for service. BikeDoctor fik den til at kore som ny igen.",
   },
   {
     name: "Sofie M.",
     location: "Valby",
     rating: 5,
-    text: "Booket online, mekanikeren kom dagen efter. S\u00e5 nemt og bekvemt!",
+    text: "Booket online, mekanikeren kom dagen efter. Sa nemt og bekvemt!",
   },
   {
     name: "Kasper R.",
     location: "Hellerup",
     rating: 4,
-    text: "Professionelt arbejde med min ladcykel. Kan klart anbefales til travle for\u00e6ldre.",
+    text: "Professionelt arbejde med min ladcykel. Kan klart anbefales til travle foraeldre.",
   },
 ]
 
@@ -55,7 +55,7 @@ function Stars({ count }: { count: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`size-3.5 ${i < count ? "fill-accent text-accent" : "fill-muted text-muted"}`}
+          className={`size-3.5 ${i < count ? "fill-trustpilot text-trustpilot" : "fill-muted text-muted"}`}
         />
       ))}
     </div>
@@ -78,14 +78,10 @@ export function TestimonialsCarousel() {
         animationId = requestAnimationFrame(step)
         return
       }
-
       el.scrollLeft += speed
-
-      // Loop: when we've scrolled past half (the duplicated set), reset
       if (el.scrollLeft >= el.scrollWidth / 2) {
         el.scrollLeft = 0
       }
-
       animationId = requestAnimationFrame(step)
     }
 
@@ -93,24 +89,23 @@ export function TestimonialsCarousel() {
     return () => cancelAnimationFrame(animationId)
   }, [isPaused])
 
-  // Duplicate testimonials for seamless loop
   const items = [...TESTIMONIALS, ...TESTIMONIALS]
 
   return (
-    <section className="bg-card py-10">
-      <div className="mx-auto max-w-6xl px-6">
+    <section className="bg-card py-10 sm:py-12">
+      <div className="bd-container">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-foreground">
-            {"Hvad vores kunder siger"}
+            Hvad vores kunder siger
           </p>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <div className="flex gap-0.5">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-3.5 fill-accent text-accent" />
+                <Star key={i} className="size-3.5 fill-trustpilot text-trustpilot" />
               ))}
             </div>
             <span className="text-xs font-medium text-muted-foreground">
-              {"4.9/5 p\u00e5 Trustpilot"}
+              4.3 pa Trustpilot
             </span>
           </div>
         </div>
@@ -122,14 +117,14 @@ export function TestimonialsCarousel() {
         onMouseLeave={() => setIsPaused(false)}
         onFocus={() => setIsPaused(true)}
         onBlur={() => setIsPaused(false)}
-        className="mt-5 flex gap-4 overflow-hidden px-6"
+        className="mt-5 flex gap-4 overflow-hidden px-5 sm:px-6 lg:px-8"
         role="region"
         aria-label="Kundeanmeldelser"
       >
         {items.map((t, i) => (
           <div
             key={i}
-            className="flex w-72 shrink-0 flex-col justify-between rounded-2xl border border-border/60 bg-background p-5"
+            className="flex w-72 shrink-0 flex-col justify-between rounded-2xl bg-background p-5"
           >
             <div>
               <Stars count={t.rating} />

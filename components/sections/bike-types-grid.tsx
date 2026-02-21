@@ -1,27 +1,13 @@
 import Link from "next/link"
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/server"
 import type { BikeType } from "@/lib/types"
-import {
-  Bike,
-  Zap,
-  Baby,
-  Truck,
-  CircleDot,
-  Accessibility,
-  Bolt,
-  HelpCircle,
-} from "lucide-react"
+import { Wrench } from "lucide-react"
 
-const BIKE_ICONS: Record<string, typeof Bike> = {
-  cykel: Bike,
-  elcykel: Zap,
-  ladcykel: Truck,
-  "boerne-cykel": Baby,
-  fatbike: CircleDot,
-  korestol: Accessibility,
-  "el-loebehjul": Bolt,
-  andet: HelpCircle,
-}
+// ---------------------------------------------------------------------------
+// Bike Types Section -- matches Figma: two-tone heading left, 2-col wrench
+// link list, large photo right. Uses bd-* utilities for consistent spacing.
+// ---------------------------------------------------------------------------
 
 async function getBikeTypes(): Promise<BikeType[]> {
   const supabase = await createClient()
@@ -38,37 +24,49 @@ export async function BikeTypesGrid() {
   const bikeTypes = await getBikeTypes()
 
   return (
-    <section className="bg-background py-20 sm:py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Vi reparerer alle cykeltyper
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground">
-            {"Fra almindelige cykler til el-cykler og ladcykler"}
-          </p>
-        </div>
+    <section className="bd-section bg-card">
+      <div className="bd-container">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* Left: heading + list */}
+          <div>
+            <h2 className="bd-heading">
+              Hvad kan vi{" "}
+              <span className="bd-heading-accent">reparere for dig?</span>
+            </h2>
+            <p className="bd-body mt-4 max-w-md">
+              Her er de hovedtyper af koretojer, vi kan reparere. Hvis du ikke
+              finder din type her, sa bare rolig! Giv os et opkald, sa finder vi
+              gerne ud af, om vi kan hjaelpe med din specifikke sag.
+            </p>
 
-        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {bikeTypes.map((type) => {
-            const Icon = BIKE_ICONS[type.slug] ?? Bike
-            const pageSlug = `${type.slug}-reparation`
+            {/* 2-col link list with wrench icons */}
+            <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-3">
+              {bikeTypes.map((type) => {
+                const pageSlug = `${type.slug}-reparation`
+                return (
+                  <Link
+                    key={type.id}
+                    href={`/${pageSlug}`}
+                    className="group flex items-center gap-2.5 text-base font-medium text-primary transition-colors hover:text-accent"
+                  >
+                    <Wrench className="size-4 shrink-0 text-accent" />
+                    {type.name_da}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
 
-            return (
-              <Link
-                key={type.id}
-                href={`/${pageSlug}`}
-                className="group flex flex-col items-center rounded-2xl bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/[0.06]">
-                  <Icon className="size-7 text-primary transition-colors group-hover:text-accent" />
-                </div>
-                <p className="mt-4 text-sm font-medium text-foreground">
-                  {type.name_da}
-                </p>
-              </Link>
-            )
-          })}
+          {/* Right: photo */}
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+            <Image
+              src="/images/bike-types.jpg"
+              alt="Forskellige cykeltyper vi reparerer"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
         </div>
       </div>
     </section>

@@ -4,8 +4,17 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* BikeDoctor brand -- exact from logo SVG: Navy #082852 + Coral #F15C45 */
-  --background: #f0f4f8;
+  /*
+   * BikeDoctor Design System -- derived from Figma (2025)
+   * Colors: Navy #082852, Coral #F15C45, Trustpilot #00b67a / #005128
+   * Backgrounds: white #ffffff, light #f9fbff, page #f0f4f8
+   * Cards: white, rounded-2xl (16px), soft shadow, no heavy borders
+   * CTA buttons: coral, rounded-full (pill), white text, icon right
+   * Hero: full-bleed photo, navy gradient overlay left-heavy, text left-aligned
+   * USP cards: overlap hero bottom edge ~50%, 3-col grid
+   * Section headings: navy bold + coral italic for accent words
+   */
+  --background: #f9fbff;
   --foreground: #082852;
   --card: #ffffff;
   --card-foreground: #082852;
@@ -13,36 +22,40 @@
   --popover-foreground: #082852;
   --primary: #082852;
   --primary-foreground: #ffffff;
-  --secondary: #e8eef5;
+  --secondary: #f0f4f8;
   --secondary-foreground: #082852;
-  --muted: #e8eef5;
+  --muted: #f0f4f8;
   --muted-foreground: #4a6a8a;
   --accent: #F15C45;
   --accent-foreground: #ffffff;
   --destructive: #c0392b;
   --destructive-foreground: #ffffff;
-  --border: #c9d6e3;
-  --input: #c9d6e3;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
   --ring: #F15C45;
   --chart-1: #082852;
   --chart-2: #F15C45;
   --chart-3: #2a7d6d;
   --chart-4: #4a6a8a;
   --chart-5: #f08a72;
-  --radius: 0.625rem;
+  --radius: 1rem;
   --sidebar: #082852;
-  --sidebar-foreground: #f0f4f8;
+  --sidebar-foreground: #f9fbff;
   --sidebar-primary: #F15C45;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #0c3a6e;
-  --sidebar-accent-foreground: #f0f4f8;
+  --sidebar-accent-foreground: #f9fbff;
   --sidebar-border: #0c3a6e;
   --sidebar-ring: #F15C45;
+
+  /* Trustpilot brand */
+  --trustpilot: #00b67a;
+  --trustpilot-dark: #005128;
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
-  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-sans: 'Poppins', 'Poppins Fallback', sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -79,6 +92,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Trustpilot */
+  --color-trustpilot: var(--trustpilot);
+  --color-trustpilot-dark: var(--trustpilot-dark);
 }
 
 @layer base {
@@ -87,5 +104,56 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================================
+   BikeDoctor Shared Component Styles (from Figma)
+   Use these utilities across ALL section components.
+   ============================================================ */
+
+@layer utilities {
+  /* Section container -- max-w-6xl centered with horizontal padding */
+  .bd-container {
+    @apply mx-auto max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Section vertical rhythm */
+  .bd-section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Section heading: navy bold. Use .bd-heading-accent on <span> for coral italic words */
+  .bd-heading {
+    @apply text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem] lg:leading-tight;
+  }
+  .bd-heading-accent {
+    @apply font-bold not-italic text-accent;
+    font-style: italic;
+  }
+
+  /* Body text under headings */
+  .bd-body {
+    @apply text-base leading-relaxed text-muted-foreground sm:text-lg;
+  }
+
+  /* Card: white bg, rounded-2xl, soft shadow, no border */
+  .bd-card {
+    @apply rounded-2xl bg-card p-6 shadow-sm sm:p-8;
+  }
+
+  /* CTA button: coral pill, white text, shadow, hover lift */
+  .bd-cta {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base font-semibold text-accent-foreground shadow-md shadow-accent/20 transition-all hover:shadow-lg hover:shadow-accent/30 hover:brightness-105 active:scale-[0.98];
+  }
+
+  /* CTA button outline variant (used for secondary actions) */
+  .bd-cta-outline {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-primary px-7 py-3.5 text-base font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground active:scale-[0.98];
+  }
+
+  /* Coral line-art icon container (used in USP cards) */
+  .bd-icon {
+    @apply flex size-12 items-center justify-center rounded-xl bg-accent/10 text-accent sm:size-14;
   }
 }

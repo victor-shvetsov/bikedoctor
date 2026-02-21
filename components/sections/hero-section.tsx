@@ -1,84 +1,72 @@
 import Link from "next/link"
-import { MapPin, Clock, ShieldCheck, ChevronDown } from "lucide-react"
+import Image from "next/image"
+import { Clock } from "lucide-react"
+
+// ---------------------------------------------------------------------------
+// Hero Section -- matches Figma: full-bleed photo, navy gradient overlay
+// (heavier left), text LEFT-aligned, coral pill CTA, Trustpilot badge.
+// USP cards overlap the bottom edge via negative margin on the next section.
+// ---------------------------------------------------------------------------
 
 interface HeroSectionProps {
   h1: string
   subheadline?: string | null
   ctaText: string
-  /** Optional badge text above the heading */
-  badge?: string
 }
 
-const USP_HIGHLIGHTS = [
-  { icon: MapPin, text: "Vi kommer til dig" },
-  { icon: Clock, text: "Fleksible tider" },
-  { icon: ShieldCheck, text: "Garanti p\u00e5 alt arbejde" },
-]
-
-export function HeroSection({
-  h1,
-  subheadline,
-  ctaText,
-  badge,
-}: HeroSectionProps) {
+export function HeroSection({ h1, subheadline, ctaText }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-primary">
-      {/* Background image placeholder -- sits behind content with overlay */}
-      <div className="absolute inset-0 bg-primary/90" aria-hidden="true">
-        {/* Replace this div with <Image> when real hero photo is available:
-            className="absolute inset-0 object-cover opacity-20" */}
+    <section className="relative min-h-[600px] overflow-hidden bg-primary lg:min-h-[680px]">
+      {/* Background image -- replace src with real hero photo */}
+      <Image
+        src="/images/hero-bg.jpg"
+        alt=""
+        fill
+        priority
+        className="object-cover object-center"
+        sizes="100vw"
+      />
+
+      {/* Gradient overlay: heavier on the left for text readability */}
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/40"
+        aria-hidden="true"
+      />
+
+      {/* Content */}
+      <div className="bd-container relative flex min-h-[600px] flex-col justify-center pb-32 pt-32 lg:min-h-[680px] lg:pb-40 lg:pt-40">
+        <div className="max-w-xl">
+          <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-primary-foreground sm:text-5xl lg:text-[3.5rem]">
+            {h1}
+          </h1>
+
+          {subheadline && (
+            <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-primary-foreground/75 sm:text-lg">
+              {subheadline}
+            </p>
+          )}
+
+          {/* CTA */}
+          <div className="mt-8">
+            <Link href="/#book" className="bd-cta text-lg">
+              {ctaText}
+              <Clock className="size-5" />
+            </Link>
+          </div>
+        </div>
       </div>
 
-      {/* Subtle accent glow */}
-      <div className="pointer-events-none absolute -right-40 -top-40 size-[600px] rounded-full bg-accent/[0.06] blur-3xl" aria-hidden="true" />
-
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-6 pb-20 pt-24 text-center sm:pb-28 sm:pt-36 lg:pb-32 lg:pt-40">
-        {badge && (
-          <span className="mb-5 inline-flex items-center rounded-full bg-primary-foreground/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground/80">
-            {badge}
-          </span>
-        )}
-
-        <h1 className="mx-auto max-w-4xl text-balance text-4xl font-bold tracking-tight text-primary-foreground sm:text-5xl lg:text-6xl">
-          {h1}
-        </h1>
-
-        {subheadline && (
-          <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-primary-foreground/75 sm:text-xl">
-            {subheadline}
-          </p>
-        )}
-
-        {/* 3 USP highlights */}
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
-          {USP_HIGHLIGHTS.map((usp) => (
-            <div key={usp.text} className="flex items-center gap-2.5">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-accent/20">
-                <usp.icon className="size-4 text-accent" />
-              </div>
-              <span className="text-sm font-medium text-primary-foreground/80">
-                {usp.text}
-              </span>
-            </div>
-          ))}
+      {/* Trustpilot badge -- bottom right */}
+      <div className="absolute bottom-8 right-6 z-10 flex flex-col items-center rounded-xl bg-card/95 px-4 py-3 shadow-lg backdrop-blur-sm sm:right-10 lg:bottom-12 lg:right-16">
+        <div className="flex items-center gap-1">
+          <span className="text-lg font-bold text-foreground">4.3</span>
+          <svg viewBox="0 0 24 24" className="size-5 fill-trustpilot" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
         </div>
-
-        {/* CTA buttons */}
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
-          <Link
-            href="/#book"
-            className="inline-flex w-full items-center justify-center rounded-xl bg-accent px-8 py-4 text-base font-semibold text-accent-foreground shadow-lg shadow-accent/25 transition-all hover:bg-accent/90 hover:shadow-xl hover:shadow-accent/30 sm:w-auto"
-          >
-            {ctaText}
-          </Link>
-          <a
-            href="#how-it-works"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary-foreground/20 px-8 py-4 text-base font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/10 sm:w-auto"
-          >
-            {"Se hvordan det virker"}
-            <ChevronDown className="size-4" />
-          </a>
-        </div>
+        <span className="mt-0.5 text-xs font-semibold tracking-wide text-foreground">
+          Trustpilot
+        </span>
       </div>
     </section>
   )

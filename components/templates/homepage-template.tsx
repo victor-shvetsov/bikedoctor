@@ -1,17 +1,19 @@
 // =============================================================================
-// Homepage Template -- Updated Layout (see BRAND.md "Homepage Layout")
+// Homepage Template -- Section Order from BRAND.md "Homepage Layout"
 // =============================================================================
-// 11-section conversion landing page:
-// 1. Hero  2. Testimonials  3. Video  4. How It Works (Steps)  5. Pricing
-// 6. About  7. App Preview  8. FAQ  9. Coverage Map  10. Final CTA  11. Footer (in layout)
+// Sections compose from standalone components in components/sections/.
+// Each section uses bd-* utility classes from globals.css for consistent
+// spacing, cards, headings, and CTA styling derived from the Figma design.
 // =============================================================================
 
 import type { TemplateProps } from "@/lib/templates/template-registry"
 import { HeroSection } from "@/components/sections/hero-section"
+import { UspCards } from "@/components/sections/usp-cards"
 import { TestimonialsCarousel } from "@/components/sections/testimonials-carousel"
 import { VideoSection } from "@/components/sections/video-section"
 import { HowItWorks } from "@/components/sections/how-it-works"
 import { PricingSection } from "@/components/sections/pricing-section"
+import { BikeTypesGrid } from "@/components/sections/bike-types-grid"
 import { AboutSection } from "@/components/sections/about-section"
 import { AppPreviewSection } from "@/components/sections/app-preview-section"
 import { FaqSection } from "@/components/sections/faq-section"
@@ -21,45 +23,49 @@ import { CtaBanner } from "@/components/sections/cta-banner"
 export function HomepageTemplate({ page }: TemplateProps) {
   return (
     <>
-      {/* 1. Hero -- headline, paragraph, 3 USP highlights, primary + secondary CTA */}
+      {/* 1. Hero -- full-bleed photo, left-aligned text, coral CTA, Trustpilot badge */}
       <HeroSection
         h1={page.h1}
         subheadline={page.subheadline}
         ctaText={page.cta_text}
       />
 
-      {/* 2. Testimonials -- auto-scrolling carousel with Trustpilot stars */}
+      {/* USP cards overlapping hero bottom edge */}
+      <UspCards />
+
+      {/* 2. Testimonials */}
       <TestimonialsCarousel />
 
-      {/* 3. How It Works (Video) -- video placeholder with intro text */}
+      {/* 3. Bike Types -- two-tone heading, wrench link list, photo */}
+      <BikeTypesGrid />
+
+      {/* 4. How It Works (Video) */}
       <VideoSection />
 
-      {/* 4. How It Works (Steps) -- 4-step grid */}
+      {/* 5. How It Works (Steps) -- 4-step grid */}
       <HowItWorks />
 
-      {/* 5. Pricing -- highlighted subscription card + service grid from DB */}
+      {/* 6. Pricing -- subscription card + service grid */}
       <PricingSection />
 
-      {/* 6. About -- founder story + trust stats */}
+      {/* 7. About -- founder story */}
       <AboutSection />
 
-      {/* 7. App Preview -- dashboard mockup showing subscription value */}
+      {/* 8. App Preview -- dashboard mockup */}
       <AppPreviewSection />
 
-      {/* 8. FAQ -- accordion from page_content.faqs */}
+      {/* 9. FAQ */}
       <FaqSection faqs={page.faqs} />
 
-      {/* 9. Coverage Map -- map placeholder + location links */}
+      {/* 10. Coverage Map */}
       <CoverageMapSection />
 
-      {/* 10. Large Final CTA -- emotional headline + strong CTA */}
+      {/* 11. Final CTA */}
       <CtaBanner
-        heading="Klar til at f\u00e5 din cykel fikset?"
+        heading="Klar til at fa din cykel fikset?"
         ctaText={page.cta_text}
-        subtext="Book p\u00e5 2 minutter \u2014 vi kommer til dig."
+        subtext="Book pa 2 minutter -- vi kommer til dig."
       />
-
-      {/* 11. Footer is rendered in layout.tsx */}
     </>
   )
 }
