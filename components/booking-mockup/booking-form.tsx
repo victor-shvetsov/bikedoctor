@@ -67,32 +67,32 @@ export function BookingForm() {
     <div className="mx-auto w-full max-w-2xl">
       {/* Step indicator bar */}
       {step !== "done" && (
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-10 flex items-center justify-between">
           {STEP_LABELS.map((s, i) => {
             const isActive = s.num === currentStepNum
             const isDone = s.num < currentStepNum
             const Icon = s.icon
             return (
               <div key={s.num} className="flex flex-1 items-center">
-                <div className="flex flex-col items-center gap-1.5">
+                <div className="flex flex-col items-center gap-2">
                   <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all ${
+                    className={`flex h-10 w-10 items-center justify-center rounded-full transition-all ${
                       isDone
-                        ? "border-accent bg-accent text-accent-foreground"
+                        ? "bg-accent text-accent-foreground"
                         : isActive
-                        ? "border-accent bg-accent/10 text-accent"
-                        : "border-border bg-card text-muted-foreground"
+                        ? "border-2 border-accent bg-accent/5 text-accent"
+                        : "border border-border/60 bg-card text-muted-foreground"
                     }`}
                   >
                     {isDone ? (
                       <Check className="h-5 w-5" />
                     ) : (
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4.5 w-4.5" />
                     )}
                   </div>
                   <span
                     className={`text-xs font-medium ${
-                      isActive || isDone ? "text-foreground" : "text-muted-foreground"
+                      isActive || isDone ? "text-foreground" : "text-muted-foreground/70"
                     }`}
                   >
                     {s.label}
@@ -100,8 +100,8 @@ export function BookingForm() {
                 </div>
                 {i < STEP_LABELS.length - 1 && (
                   <div
-                    className={`mx-2 mb-5 h-0.5 flex-1 rounded-full transition-colors ${
-                      s.num < currentStepNum ? "bg-accent" : "bg-border"
+                    className={`mx-3 mb-6 h-px flex-1 transition-colors ${
+                      s.num < currentStepNum ? "bg-accent" : "bg-border/40"
                     }`}
                   />
                 )}
@@ -112,7 +112,7 @@ export function BookingForm() {
       )}
 
       {/* Step content */}
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <div className="rounded-2xl border border-border/40 bg-card p-6 shadow-sm sm:p-8">
         {step === 1 && (
           <StepBikeType bikeTypes={BIKE_TYPES} onSelect={handleBikeSelect} />
         )}
@@ -137,12 +137,12 @@ export function BookingForm() {
           />
         )}
         {step === "done" && (
-          <div className="flex flex-col items-center gap-6 py-8 text-center">
+          <div className="flex flex-col items-center gap-8 py-10 text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
               <Check className="h-8 w-8 text-accent" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-2xl font-semibold text-foreground">
                 {"Booking bekr\u00e6ftet!"}
               </h2>
               <p className="mt-2 text-muted-foreground">
@@ -151,11 +151,11 @@ export function BookingForm() {
             </div>
 
             {/* Summary */}
-            <div className="w-full max-w-sm rounded-xl border border-border bg-secondary/30 p-4 text-left">
-              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            <div className="w-full max-w-sm rounded-xl border border-border/40 bg-muted/20 p-5 text-left">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {"Oversigt"}
               </h3>
-              <div className="flex flex-col gap-2 text-sm">
+              <div className="flex flex-col gap-2.5 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{"Cykel"}</span>
                   <span className="font-medium text-foreground">{bikeType?.label}</span>
@@ -181,7 +181,7 @@ export function BookingForm() {
                     {customerInfo?.address}
                   </span>
                 </div>
-                <div className="my-1 h-px bg-border" />
+                <div className="my-1 h-px bg-border/40" />
                 <div className="flex justify-between">
                   <span className="font-semibold text-foreground">{"Total"}</span>
                   <span className="font-bold text-accent">

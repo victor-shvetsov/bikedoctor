@@ -10,6 +10,7 @@ import {
   Check,
   ImageIcon,
   X,
+  ChevronLeft,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -58,7 +59,7 @@ export function StepServices({ bikeType, onNext, onBack }: StepServicesProps) {
 
   const tubeOptions = getTubeOptions(bikeType.slug)
   const yearlyPrice = getServiceaftalePriceYearly(bikeType.slug)
-  const monthlyPrice = Math.round((yearlyPrice / 12) * 1.15) // 15% more for monthly
+  const monthlyPrice = Math.round((yearlyPrice / 12) * 1.15)
 
   const canProceed = () => {
     if (!selectedService) return false
@@ -105,7 +106,6 @@ export function StepServices({ bikeType, onNext, onBack }: StepServicesProps) {
     return getMessagePlaceholder(bikeType.slug)
   }
 
-  // Check if sub-selection is done (message/upload should show)
   const showMessageArea =
     (selectedService === "flat-tyre" && selectedTube) ||
     selectedService === "troubleshoot" ||
@@ -113,188 +113,205 @@ export function StepServices({ bikeType, onNext, onBack }: StepServicesProps) {
     selectedService === "serviceaftale"
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <div>
-        <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-          {"Hvad er der galt med din "}
-          <span className="text-accent">{bikeType.label.toLowerCase()}</span>
-          {"?"}
+        <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
+          {"Hvad skal vi hj\u00e6lpe med?"}
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {"V\u00e6lg den service der passer bedst"}
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          {"V\u00e6lg den service der passer til din "}
+          <span className="font-medium text-foreground">{bikeType.label.toLowerCase()}</span>
         </p>
       </div>
 
-      {/* Main service cards -- show all unless one is selected, then only show selected */}
-      <div className="flex flex-col gap-3">
-        {MAIN_SERVICES.map((svc) => {
-          const Icon = serviceIcons[svc.id]
-          const isSelected = selectedService === svc.id
-          const isHidden = selectedService !== null && !isSelected
-
-          if (isHidden) return null
-
-          return (
-            <div key={svc.id}>
+      {/* Service cards -- 2x2 grid like bike type step */}
+      {!selectedService && (
+        <div className="grid grid-cols-2 gap-3">
+          {MAIN_SERVICES.map((svc) => {
+            const Icon = serviceIcons[svc.id]
+            return (
               <button
-                onClick={() => {
-                  if (isSelected) {
-                    // Deselect
-                    setSelectedService(null)
-                    setSelectedTube(null)
-                    setSelectedMaintenance(null)
-                  } else {
-                    setSelectedService(svc.id)
-                    setSelectedTube(null)
-                    setSelectedMaintenance(null)
-                  }
-                }}
-                className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-all ${
-                  isSelected
-                    ? "border-accent bg-accent/5 shadow-sm"
-                    : "border-border bg-card hover:border-accent/50 hover:shadow-sm"
-                }`}
+                key={svc.id}
+                onClick={() => setSelectedService(svc.id)}
+                className="group flex flex-col items-center gap-3 rounded-2xl border border-border/60 bg-card p-6 transition-all hover:border-accent/40 hover:shadow-md active:scale-[0.97]"
               >
-                <div
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                    isSelected ? "bg-accent/15 text-accent" : "bg-secondary text-foreground"
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50 transition-colors group-hover:bg-accent/10">
+                  <Icon className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-accent" />
                 </div>
-                <div className="flex-1">
-                  <span className="font-semibold text-foreground">{svc.title}</span>
-                  <p className="text-sm text-muted-foreground">{svc.subtitle}</p>
+                <div className="text-center">
+                  <span className="text-sm font-semibold text-foreground">{svc.title}</span>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{svc.subtitle}</p>
                 </div>
                 {svc.price !== null && (
-                  <span className="shrink-0 text-lg font-bold text-foreground">
-                    {svc.price},-
+                  <span className="rounded-full bg-muted/50 px-3 py-0.5 text-xs font-semibold text-foreground">
+                    {"fra "}{svc.price}{",-"}
                   </span>
                 )}
-                {isSelected && (
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent">
-                    <Check className="h-3.5 w-3.5 text-accent-foreground" />
-                  </div>
-                )}
               </button>
+            )
+          })}
+        </div>
+      )}
 
-              {/* Sub-options for flat tyre */}
-              {isSelected && svc.id === "flat-tyre" && (
-                <div className="mt-3 grid grid-cols-2 gap-2 pl-2 sm:grid-cols-3">
-                  {tubeOptions.map((opt) => (
-                    <button
-                      key={opt.id}
-                      onClick={() => setSelectedTube(opt)}
-                      className={`flex flex-col items-center gap-1 rounded-lg border-2 px-3 py-3 text-center transition-all ${
-                        selectedTube?.id === opt.id
-                          ? "border-accent bg-accent/5 shadow-sm"
-                          : "border-border bg-card hover:border-accent/50"
-                      }`}
-                    >
-                      <span className="text-xs font-medium text-foreground">{opt.label}</span>
-                      <span className="text-lg font-bold text-accent">{opt.price},-</span>
-                    </button>
-                  ))}
+      {/* Selected service header with back */}
+      {selectedService && (
+        <div>
+          <button
+            onClick={() => {
+              setSelectedService(null)
+              setSelectedTube(null)
+              setSelectedMaintenance(null)
+            }}
+            className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            {"Alle services"}
+          </button>
+
+          {/* Active service badge */}
+          {(() => {
+            const svc = MAIN_SERVICES.find((s) => s.id === selectedService)
+            const Icon = serviceIcons[selectedService]
+            if (!svc) return null
+            return (
+              <div className="mb-5 flex items-center gap-3 rounded-xl border border-accent/20 bg-accent/5 px-4 py-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent/10">
+                  <Icon className="h-4.5 w-4.5 text-accent" />
                 </div>
-              )}
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{svc.title}</p>
+                  <p className="text-xs text-muted-foreground">{svc.subtitle}</p>
+                </div>
+              </div>
+            )
+          })()}
 
-              {/* Sub-options for maintenance */}
-              {isSelected && svc.id === "maintenance" && (
-                <div className="mt-3 flex flex-col gap-2 pl-2">
-                  {MAINTENANCE_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.id}
-                      onClick={() => setSelectedMaintenance(opt)}
-                      className={`flex flex-col gap-2 rounded-lg border-2 p-4 text-left transition-all ${
-                        selectedMaintenance?.id === opt.id
-                          ? "border-accent bg-accent/5 shadow-sm"
-                          : "border-border bg-card hover:border-accent/50"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-foreground">{opt.title}</span>
-                        <span className="text-lg font-bold text-accent">{opt.price},-</span>
+          {/* Sub-options for flat tyre */}
+          {selectedService === "flat-tyre" && (
+            <div className="flex flex-col gap-2">
+              <p className="mb-1 text-sm font-medium text-foreground">{"Hvad skal skiftes?"}</p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {tubeOptions.map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => setSelectedTube(opt)}
+                    className={`flex flex-col items-center gap-1.5 rounded-xl border px-3 py-4 text-center transition-all ${
+                      selectedTube?.id === opt.id
+                        ? "border-accent/40 bg-accent/5 shadow-sm"
+                        : "border-border/60 bg-card hover:border-accent/30"
+                    }`}
+                  >
+                    <span className="text-xs font-medium text-foreground">{opt.label}</span>
+                    <span className="text-lg font-bold text-accent">{opt.price},-</span>
+                    {selectedTube?.id === opt.id && (
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-accent">
+                        <Check className="h-3 w-3 text-accent-foreground" />
                       </div>
-                      {selectedMaintenance?.id === opt.id && (
-                        <p className="text-sm leading-relaxed text-muted-foreground">
-                          {opt.description}
-                        </p>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
-              {/* Sub-options for serviceaftale */}
-              {isSelected && svc.id === "serviceaftale" && (
-                <div className="mt-3 flex flex-col gap-3 pl-2">
-                  {/* Yearly/monthly toggle */}
-                  <div className="flex items-center justify-center gap-1 rounded-lg bg-secondary p-1">
-                    <button
-                      onClick={() => setBillingCycle("yearly")}
-                      className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-all ${
-                        billingCycle === "yearly"
-                          ? "bg-card text-foreground shadow-sm"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {"\u00c5rligt"}
-                      <span className="ml-1.5 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-semibold text-accent">
-                        {"Spar 15%"}
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => setBillingCycle("monthly")}
-                      className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-all ${
-                        billingCycle === "monthly"
-                          ? "bg-card text-foreground shadow-sm"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {"M\u00e5nedligt"}
-                    </button>
-                  </div>
-                  <div className="rounded-lg border-2 border-accent/30 bg-accent/5 p-4 text-center">
-                    <p className="text-3xl font-bold text-foreground">
-                      {billingCycle === "yearly" ? (
-                        <>
-                          {yearlyPrice}
-                          <span className="text-base font-normal text-muted-foreground">
-                            {" kr/\u00e5r"}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          {monthlyPrice}
-                          <span className="text-base font-normal text-muted-foreground">
-                            {" kr/md"}
-                          </span>
-                        </>
-                      )}
-                    </p>
-                    {billingCycle === "monthly" && (
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {"Binding i 12 m\u00e5neder"}
+          {/* Sub-options for maintenance */}
+          {selectedService === "maintenance" && (
+            <div className="flex flex-col gap-2">
+              <p className="mb-1 text-sm font-medium text-foreground">{"V\u00e6lg serviceniveau"}</p>
+              <div className="flex flex-col gap-2">
+                {MAINTENANCE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => setSelectedMaintenance(opt)}
+                    className={`flex flex-col gap-2 rounded-xl border p-4 text-left transition-all ${
+                      selectedMaintenance?.id === opt.id
+                        ? "border-accent/40 bg-accent/5 shadow-sm"
+                        : "border-border/60 bg-card hover:border-accent/30"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-foreground">{opt.title}</span>
+                      <span className="text-lg font-bold text-accent">{opt.price},-</span>
+                    </div>
+                    {selectedMaintenance?.id === opt.id && (
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {opt.description}
                       </p>
                     )}
-                  </div>
-                  <a
-                    href="#"
-                    className="text-center text-sm text-accent underline underline-offset-2 hover:text-accent/80"
-                  >
-                    {"L\u00e6s vilk\u00e5r og betingelser for serviceaftale"}
-                  </a>
-                </div>
-              )}
+                  </button>
+                ))}
+              </div>
             </div>
-          )
-        })}
-      </div>
+          )}
+
+          {/* Sub-options for serviceaftale */}
+          {selectedService === "serviceaftale" && (
+            <div className="flex flex-col gap-4">
+              {/* Yearly/monthly toggle */}
+              <div className="flex items-center justify-center gap-1 rounded-xl bg-muted/40 p-1">
+                <button
+                  onClick={() => setBillingCycle("yearly")}
+                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+                    billingCycle === "yearly"
+                      ? "bg-card text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {"\u00c5rligt"}
+                  <span className="ml-1.5 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-semibold text-accent">
+                    {"Spar 15%"}
+                  </span>
+                </button>
+                <button
+                  onClick={() => setBillingCycle("monthly")}
+                  className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+                    billingCycle === "monthly"
+                      ? "bg-card text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {"M\u00e5nedligt"}
+                </button>
+              </div>
+              <div className="rounded-xl border border-accent/20 bg-accent/5 p-5 text-center">
+                <p className="text-3xl font-bold text-foreground">
+                  {billingCycle === "yearly" ? (
+                    <>
+                      {yearlyPrice}
+                      <span className="text-base font-normal text-muted-foreground">
+                        {" kr/\u00e5r"}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {monthlyPrice}
+                      <span className="text-base font-normal text-muted-foreground">
+                        {" kr/md"}
+                      </span>
+                    </>
+                  )}
+                </p>
+                {billingCycle === "monthly" && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {"Binding i 12 m\u00e5neder"}
+                  </p>
+                )}
+              </div>
+              <a
+                href="#"
+                className="text-center text-sm text-accent underline underline-offset-2 hover:text-accent/80"
+              >
+                {"L\u00e6s vilk\u00e5r og betingelser for serviceaftale"}
+              </a>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Message + image upload area */}
       {showMessageArea && (
-        <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4">
-          <label className="text-sm font-semibold text-foreground">
+        <div className="flex flex-col gap-3 rounded-xl border border-border/40 bg-muted/20 p-5">
+          <label className="text-sm font-medium text-foreground">
             {"Besked til mekaniker"}
           </label>
           <Textarea
@@ -302,13 +319,13 @@ export function StepServices({ bikeType, onNext, onBack }: StepServicesProps) {
             onChange={(e) => setMessage(e.target.value)}
             placeholder={getPlaceholder()}
             rows={3}
-            className="resize-none border-border bg-background text-sm"
+            className="resize-none border-border/60 bg-card text-sm"
           />
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={handleImageUpload}
-              className="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:border-accent hover:text-accent"
+              className="flex items-center gap-2 rounded-lg border border-dashed border-border/60 px-3 py-2 text-sm text-muted-foreground transition-colors hover:border-accent/40 hover:text-accent"
             >
               {imageFile ? (
                 <>
@@ -344,17 +361,19 @@ export function StepServices({ bikeType, onNext, onBack }: StepServicesProps) {
       )}
 
       {/* Navigation */}
-      <div className="flex items-center justify-between pt-2">
-        <Button variant="ghost" onClick={onBack} className="text-muted-foreground">
+      <div className="flex items-center justify-between">
+        <Button variant="ghost" onClick={onBack} className="text-muted-foreground hover:text-foreground">
           {"Tilbage"}
         </Button>
-        <Button
-          onClick={handleNext}
-          disabled={!canProceed()}
-          className="bg-accent px-8 font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-40"
-        >
-          {"N\u00e6ste"}
-        </Button>
+        {selectedService && (
+          <Button
+            onClick={handleNext}
+            disabled={!canProceed()}
+            className="bg-accent px-8 font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-40"
+          >
+            {"N\u00e6ste"}
+          </Button>
+        )}
       </div>
     </div>
   )
