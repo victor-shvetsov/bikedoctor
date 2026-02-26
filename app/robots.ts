@@ -16,6 +16,7 @@ export default function robots(): MetadataRoute.Robots {
           "/sprint",
           "/project-map",
           "/seo-map",
+          "/booking-mockup",
         ],
       },
     ],
