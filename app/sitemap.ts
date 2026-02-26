@@ -4,10 +4,15 @@ import type { MetadataRoute } from "next"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bikedoctor.dk"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  // During static build, env vars may not be available -- return a minimal sitemap
+  if (!supabaseUrl || !supabaseKey) {
+    return [{ url: SITE_URL, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 }]
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey)
 
   const { data: pages } = await supabase
     .from("page_content")
