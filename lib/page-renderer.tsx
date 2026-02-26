@@ -155,6 +155,11 @@ export async function renderPage(slug: string, locale: CustomerLocale) {
 
 export async function getAllPublishedSlugs() {
   const supabase = createStaticClient()
+
+  // During static build, env vars may not be available -- return empty so
+  // pages fall back to on-demand ISR instead of pre-rendering.
+  if (!supabase) return []
+
   const { data } = await supabase
     .from("page_content")
     .select("slug")
