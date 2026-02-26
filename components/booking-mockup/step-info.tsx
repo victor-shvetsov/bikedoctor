@@ -52,26 +52,25 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
     form.preferredDate !== "" &&
     form.preferredTime !== ""
 
-  // Min date = tomorrow
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
   const minDate = tomorrow.toISOString().split("T")[0]
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <div>
-        <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+        <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
           {"Dine oplysninger"}
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground">
           {"Vi bruger dine oplysninger til at booke din mekaniker"}
         </p>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         {/* Name row */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <Label htmlFor="firstName" className="text-sm font-medium text-foreground">
               {"Fornavn"}
             </Label>
@@ -80,10 +79,10 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
               value={form.firstName}
               onChange={(e) => update("firstName", e.target.value)}
               placeholder="Anders"
-              className="border-border bg-background"
+              className="border-border/60 bg-card"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <Label htmlFor="lastName" className="text-sm font-medium text-foreground">
               {"Efternavn"}
             </Label>
@@ -92,13 +91,13 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
               value={form.lastName}
               onChange={(e) => update("lastName", e.target.value)}
               placeholder="Jensen"
-              className="border-border bg-background"
+              className="border-border/60 bg-card"
             />
           </div>
         </div>
 
         {/* Email */}
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="email" className="text-sm font-medium text-foreground">
             {"Email"}
           </Label>
@@ -108,12 +107,12 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
             placeholder="anders@eksempel.dk"
-            className="border-border bg-background"
+            className="border-border/60 bg-card"
           />
         </div>
 
         {/* Phone */}
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="phone" className="text-sm font-medium text-foreground">
             {"Telefon"}
           </Label>
@@ -123,12 +122,12 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
             value={form.phone}
             onChange={(e) => update("phone", e.target.value)}
             placeholder="+45 12 34 56 78"
-            className="border-border bg-background"
+            className="border-border/60 bg-card"
           />
         </div>
 
         {/* Address */}
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <Label htmlFor="address" className="text-sm font-medium text-foreground">
             {"Adresse (hvor vi skal komme)"}
           </Label>
@@ -137,13 +136,13 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
             value={form.address}
             onChange={(e) => update("address", e.target.value)}
             placeholder="Vesterbrogade 42, 1620 K\u00f8benhavn V"
-            className="border-border bg-background"
+            className="border-border/60 bg-card"
           />
         </div>
 
         {/* Date and time */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <Label htmlFor="date" className="text-sm font-medium text-foreground">
               {"Dato"}
             </Label>
@@ -153,10 +152,10 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
               min={minDate}
               value={form.preferredDate}
               onChange={(e) => update("preferredDate", e.target.value)}
-              className="border-border bg-background"
+              className="border-border/60 bg-card"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-2">
             <Label htmlFor="time" className="text-sm font-medium text-foreground">
               {"Tidsinterval"}
             </Label>
@@ -164,7 +163,7 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
               id="time"
               value={form.preferredTime}
               onChange={(e) => update("preferredTime", e.target.value)}
-              className="flex h-9 w-full rounded-md border border-border bg-background px-3 py-1 text-sm text-foreground shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="flex h-9 w-full rounded-md border border-border/60 bg-card px-3 py-1 text-sm text-foreground shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               <option value="">{"V\u00e6lg tid"}</option>
               {TIME_SLOTS.map((slot) => (
@@ -178,8 +177,8 @@ export function StepInfo({ onNext, onBack }: StepInfoProps) {
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between pt-2">
-        <Button variant="ghost" onClick={onBack} className="text-muted-foreground">
+      <div className="flex items-center justify-between">
+        <Button variant="ghost" onClick={onBack} className="text-muted-foreground hover:text-foreground">
           {"Tilbage"}
         </Button>
         <Button

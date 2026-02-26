@@ -30,12 +30,12 @@ interface StepBikeTypeProps {
 
 export function StepBikeType({ bikeTypes, onSelect }: StepBikeTypeProps) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <div>
-        <h2 className="text-xl font-bold text-foreground sm:text-2xl">
+        <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
           {"V\u00e6lg din cykeltype"}
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground">
           {"Priserne afh\u00e6nger af din cykeltype"}
         </p>
       </div>
@@ -46,10 +46,10 @@ export function StepBikeType({ bikeTypes, onSelect }: StepBikeTypeProps) {
             <button
               key={bt.slug}
               onClick={() => onSelect(bt)}
-              className="group flex flex-col items-center gap-3 rounded-xl border-2 border-border bg-card p-5 transition-all hover:border-accent hover:shadow-md active:scale-[0.97]"
+              className="group flex flex-col items-center gap-3 rounded-2xl border border-border/60 bg-card p-6 transition-all hover:border-accent/40 hover:shadow-md active:scale-[0.97]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary transition-colors group-hover:bg-accent/10">
-                <Icon className="h-6 w-6 text-foreground transition-colors group-hover:text-accent" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50 transition-colors group-hover:bg-accent/10">
+                <Icon className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-accent" />
               </div>
               <span className="text-sm font-semibold text-foreground">
                 {bt.label}
