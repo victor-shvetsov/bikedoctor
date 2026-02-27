@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { Check, Bike, Wrench, User, CreditCard } from "lucide-react"
-import { BIKE_TYPES, type BikeTypeOption, type ServiceCardType } from "./mock-data"
+import { BIKE_TYPES, type BikeTypeOption } from "./mock-data"
 import { StepBikeType } from "./step-bike-type"
-import { StepServices } from "./step-services"
+import { StepServices, type SingleServiceSelection } from "./step-services"
 import { StepInfo, type CustomerFormData } from "./step-info"
 import { StepPayment } from "./step-payment"
 
@@ -17,31 +17,30 @@ const STEP_LABELS = [
   { num: 4, label: "Betaling", icon: CreditCard },
 ]
 
-interface ServiceSelection {
-  service: ServiceCardType
-  subOption?: string
-  message: string
-  imageFile?: File | null
-  price: number
-  billingCycle?: "yearly" | "monthly"
+const serviceLabels: Record<string, string> = {
+  "flat-tyre": "Punkteret d\u00e6k",
+  troubleshoot: "Fejlfinding",
+  maintenance: "Service eftersyn",
+  serviceaftale: "Serviceaftale",
 }
 
 export function BookingForm() {
   const [step, setStep] = useState<Step>(1)
   const [bikeType, setBikeType] = useState<BikeTypeOption | null>(null)
-  const [serviceSelection, setServiceSelection] = useState<ServiceSelection | null>(null)
+  const [serviceSelections, setServiceSelections] = useState<SingleServiceSelection[]>([])
   const [customerInfo, setCustomerInfo] = useState<CustomerFormData | null>(null)
   const [paymentMethod, setPaymentMethod] = useState<"card" | "at-arrival" | null>(null)
 
   const currentStepNum = typeof step === "number" ? step : 5
+  const totalPrice = serviceSelections.reduce((sum, s) => sum + s.price, 0)
 
   const handleBikeSelect = (bt: BikeTypeOption) => {
     setBikeType(bt)
     setStep(2)
   }
 
-  const handleServiceNext = (selection: ServiceSelection) => {
-    setServiceSelection(selection)
+  const handleServiceNext = (selections: SingleServiceSelection[]) => {
+    setServiceSelections(selections)
     setStep(3)
   }
 
@@ -58,7 +57,7 @@ export function BookingForm() {
   const handleReset = () => {
     setStep(1)
     setBikeType(null)
-    setServiceSelection(null)
+    setServiceSelections([])
     setCustomerInfo(null)
     setPaymentMethod(null)
   }
@@ -129,9 +128,9 @@ export function BookingForm() {
             onBack={() => setStep(2)}
           />
         )}
-        {step === 4 && serviceSelection && (
+        {step === 4 && serviceSelections.length > 0 && (
           <StepPayment
-            totalPrice={serviceSelection.price}
+            totalPrice={totalPrice}
             onComplete={handlePaymentComplete}
             onBack={() => setStep(3)}
           />
@@ -160,15 +159,20 @@ export function BookingForm() {
                   <span className="text-muted-foreground">{"Cykel"}</span>
                   <span className="font-medium text-foreground">{bikeType?.label}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">{"Service"}</span>
-                  <span className="font-medium text-foreground">
-                    {serviceSelection?.service === "flat-tyre" && "Punkteret d\u00e6k"}
-                    {serviceSelection?.service === "troubleshoot" && "Fejlfinding"}
-                    {serviceSelection?.service === "maintenance" && "Service eftersyn"}
-                    {serviceSelection?.service === "serviceaftale" && "Serviceaftale"}
-                  </span>
-                </div>
+
+                {/* List all selected services */}
+                {serviceSelections.map((sel, i) => (
+                  <div key={`${sel.service}-${i}`} className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      {serviceLabels[sel.service] ?? sel.service}
+                      {sel.subLabel && <span className="ml-1 text-xs">({sel.subLabel})</span>}
+                    </span>
+                    <span className="font-medium text-foreground">
+                      {sel.price.toLocaleString("da-DK")} kr
+                    </span>
+                  </div>
+                ))}
+
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{"Dato"}</span>
                   <span className="font-medium text-foreground">
@@ -185,7 +189,7 @@ export function BookingForm() {
                 <div className="flex justify-between">
                   <span className="font-semibold text-foreground">{"Total"}</span>
                   <span className="font-bold text-accent">
-                    {serviceSelection?.price.toLocaleString("da-DK")} kr
+                    {totalPrice.toLocaleString("da-DK")} kr
                   </span>
                 </div>
                 <div className="flex justify-between">
